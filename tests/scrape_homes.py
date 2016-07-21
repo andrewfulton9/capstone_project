@@ -135,7 +135,7 @@ if __name__ == '__main__':
 
     bucket_name = 'ajfcapstonetravel'
 
-    b = conn.get_bucket(bucket_name)
+
 
     travel_terms = ['vacation', 'spain vacation',
                     'new zealand vacation',
@@ -162,8 +162,19 @@ if __name__ == '__main__':
                'emergency', 'money', 'piggy bank',
                'retire', 'bank', 'stock market']
 
+    lists = [travel_terms, home_terms, cars,
+             special_events, savings]
+    buckets = ['ajfcapstonetravel',
+               'ajfcapstonehome',
+               'ajfcapstonecars',
+               'ajfcapstonspecevents',
+               'ajfcapstonesavings']
 
-    scrape = Scraper('travel', 100000, bucket = b,
-                     aws_un = access_key,
-                     aws_pw = access_secret_key)
-    scrape.download_move()
+
+    for cat, bucket in zip(lists, buckets):
+        b = conn.get_bucket(bucket)
+        for term in cat:
+            scrape = Scraper(term), 15000, bucket = b,
+                             aws_un = access_key,
+                             aws_pw = access_secret_key)
+            scrape.download_move()
