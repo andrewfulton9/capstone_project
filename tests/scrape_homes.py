@@ -3,17 +3,44 @@ import requests
 from urllib import urlretrieve
 import os
 import time
+import boto
 
-class ScrapeHomes(object):
 
-    def __init__(self, site, n_photos, outfolder):
-        self.site = site
+class Scraper(object):
+
+    def __init__(self, search, n_photos,
+                 bucket=None, aws_un = None, aws_pw = None,
+                 outfolder='images'):
+
+        self.search = search
         self.n_photos = n_photos
+        self.pages2scrape = (n_photos / 1000) + 1
+        self.page = 1
+        self.site = self.make_site()
         self.outfolder = outfolder
-        self.pg1_urls = self.get_img_urls_page()
+        self.bucket = bucket
+        self.aws_un = aws_un
+        self.aws_pw = aws_pw
         self.all_urls = self.get_img_urls_many_pages()
 
-    def get_img_urls_page(self, url=None):
+    def make_site(self, page = None):
+        '''
+        INPUT: self
+        OUTPUT: the url to scrape w/ the search term and pg # included
+        '''
+        if page == None:
+            page = self.page
+        return( 'https://www.dreamstime.com/search.php?srh_field={}&s_ph=y&s_il=y&s_rf=y&s_ed=y&s_clc=y&s_clm=y&s_orp=y&s_ors=y&s_orl=y&s_orw=y&s_st=new&s_sm=all&s_rsf=0&s_rst=7&s_mrg=1&s_sl0=y&s_sl1=y&s_sl2=y&s_sl3=y&s_sl4=y&s_sl5=y&s_mrc1=y&s_mrc2=y&s_mrc3=y&s_mrc4=y&s_mrc5=y&s_exc=&items=1000&pg={}'.format(self.search, page)
+               )
+
+    def get_img_urls_per_page(self, url=None):
+        '''
+        Input: a url of the site to scrape
+        Output: list of urls for the images displayed on page
+
+        gets the html parses the html to find the image links on a webpage
+        '''
+
         if url:
             html = requests.get(url).content
         else:
@@ -28,18 +55,26 @@ class ScrapeHomes(object):
         return ls
 
     def get_img_urls_many_pages(self):
+        '''
+        Input: None
+        Output: A list of all urls to retrieve images
+        '''
         ls = []
-        for x in range(0, self.n_photos+1, 75):
-            url = self.site
-            if x > 74:
-                url = url + '#start:{}'.format(x)
-            ls2 = self.get_img_urls_page(url)
+        for pg in range(1, self.pages2scrape+1):
+            self.page = pg
+            url = self.make_site(page = pg)
+            ls2 = self.get_img_urls_per_page(url)
             ls = ls + list(ls2)
-        #ls = [url for url in ls if 'canstockphoto' in url]
-        self.all_urls_list = ls
         return set(ls)
 
-    def download_photos(self, ls = None):
+    def download_subset(self, ls = None):
+        '''
+        INPUT: none or list
+        OUTPUT: none
+
+        takes a list of urls to be downloaded and downloads them
+        to the outfolder.
+        '''
         if ls:
             urls = ls
         else:
@@ -56,38 +91,54 @@ class ScrapeHomes(object):
             except:
                 continue
 
+    def transfer_2_s3(self):
+        already_in = [f.name for f in self.bucket.list()]
+        for x in os.listdir(self.outfolder):
+            if x in already_in:
+                continue
+            filename = self.outfolder + '/' + x
+            k = self.bucket.new_key(x)
+            k.set_contents_from_filename(filename)
+            already_in += x
+
+
+    def empty_image_dir(self):
+        for f in os.listdir(self.outfolder):
+            file_del = self.outfolder + '/' + f
+            os.remove(file_del)
+
+    def download_move(self):
+        '''
+        INPUT: None
+        OUTPUT: None
+
+        meat of the class. This downloads the photos
+        '''
+        for x in range(100, len(self.all_urls)+1, 100):
+            lower = x - 100
+            to_scrape = list(self.all_urls)[lower:x]
+            print 'scraping {} - {}'.format(lower, x)
+            self.download_subset(ls = to_scrape)
+            print 'sleeping'
+            self.transfer_2_s3()
+            time.sleep(15)
+            self.empty_image_dir()
+
+
+
 if __name__ == '__main__':
 
-    outpath = '../../../../Desktop/CapstoneImages/Home'
-    #outpath = 'images'
+    access_key = os.environ['AWS_ACCESS_KEY_ID1']
+    access_secret_key = os.environ['AWS_SECRET_ACCESS_KEY1']
 
-    site = 'https://www.dreamstime.com/search.php?srh_field=house&s_ph=y&s_il=y&s_rf=y&s_ed=y&s_clc=y&s_clm=y&s_orp=y&s_ors=y&s_orl=y&s_orw=y&s_st=new&s_sm=all&s_rsf=0&s_rst=7&s_mrg=1&s_sl0=y&s_sl1=y&s_sl2=y&s_sl3=y&s_sl4=y&s_sl5=y&s_mrc1=y&s_mrc2=y&s_mrc3=y&s_mrc4=y&s_mrc5=y&s_exc=&items=1000&pg='
+    conn = boto.connect_s3(access_key, access_secret_key)
 
-    for x in range(1, 101):
-        pg = site + str(x)
-        imgs = ScrapeHomes(pg, 50, outpath+'/dreamstime')
+    bucket_name = 'ajfcapstonetravel'
 
-        for x in range(100, len(imgs.all_urls) + 1, 100):
-            lower = x - 100
-            to_scrape = list(imgs.all_urls)[lower:x]
-            print 'scraping {} - {}'.format(lower, x)
-            imgs.download_photos(ls = to_scrape)
-            print 'sleeping...'
-            time.sleep(30)
+    b = conn.get_bucket(bucket_name)
 
-    site2 = 'http://www.canstockphoto.com/images-photos/home.html'
 
-    imgs2 = ScrapeHomes(site2, 50, outpath + '/canstock')
-
-    imgs2.download_photos()
-
-    print 'dreamstime urls', len(imgs.all_urls)
-    print 'dreamstime images: ', len(os.listdir(imgs.outfolder))
-    print
-    print 'canstock urls', len(imgs2.all_urls)
-    print 'canstock images: ', len(os.listdir(imgs2.outfolder))
-#
-# http://www.canstockphoto.com/images-photos/home.html
-# http://www.canstockphoto.com/images-photos/home.html#start:75
-
-# https://www.dreamstime.com/search.php?srh_field=house&s_ph=y&s_il=y&s_rf=y&s_ed=y&s_clc=y&s_clm=y&s_orp=y&s_ors=y&s_orl=y&s_orw=y&s_st=new&s_sm=all&s_rsf=0&s_rst=7&s_mrg=1&s_sl0=y&s_sl1=y&s_sl2=y&s_sl3=y&s_sl4=y&s_sl5=y&s_mrc1=y&s_mrc2=y&s_mrc3=y&s_mrc4=y&s_mrc5=y&s_exc=&items=10000&pg=1
+    scrape = Scraper('travel', 100000, bucket = b,
+                     aws_un = access_key,
+                     aws_pw = access_secret_key)
+    scrape.download_move()
