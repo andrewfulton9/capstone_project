@@ -137,6 +137,31 @@ if __name__ == '__main__':
 
     b = conn.get_bucket(bucket_name)
 
+    travel_terms = ['vacation', 'spain vacation',
+                    'new zealand vacation',
+                    'mexico vacation', 'Chicago vacation',
+                    'Las Vegas Vacation', 'road trip',
+                    'new orleans vacation', 'ski trip']
+
+    home_terms = ['home', 'apartment', 'home repairs',
+                  'home renovation', 'new home', 'moving',
+                  'home maintanence', 'tools', 'tool kit']
+
+    cars = ['car', 'truck', 'automobile', 'road',
+            'convertible', 'sedan', 'classic cars',
+            'Toyota', 'Chevrolet','chevy', 'Honda',
+            'Nissan', 'Ford', 'motorcycle', 'moped']
+
+    special_events = ['Wedding', 'Funeral', 'Graduation',
+                      'College' 'Christmas', 'birth',
+                      'baby', 'newborn', 'engagement',
+                      'birthday', 'engagement ring',
+                      'presents', 'gifts']
+
+    savings = ['retirement', 'savings', 'finance', 'debt',
+               'emergency', 'money', 'piggy bank',
+               'retire', 'bank', 'stock market']
+
 
     scrape = Scraper('travel', 100000, bucket = b,
                      aws_un = access_key,
