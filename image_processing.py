@@ -29,7 +29,7 @@ def get_img_array(in_bucket, out_bucket):
     b1 = conn.get_bucket(in_bucket)
     b2 = conn.get_bucket(out_bucket)
 
-    files = [f.name for f in b.list()]
+    files = [f.name for f in b1.list()]
 
     ls = []
     temp_dir = tempfile.mkdtemp()
@@ -69,4 +69,5 @@ def get_img_array(in_bucket, out_bucket):
 if __name__ == '__main__':
     input_bucket = sys.argv[1]
     output_bucket = 'ajfcapstonearrays'
-    ls = get_img_array(input_bucket, output_bucket)
+
+    get_img_array(input_bucket, output_bucket)
