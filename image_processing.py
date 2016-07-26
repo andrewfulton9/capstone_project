@@ -2,6 +2,7 @@ import boto
 from boto.s3.key import Key
 import skimage
 from skimage.transform import resize
+from skimage import io
 import numpy as np
 import tempfile
 import os
@@ -42,19 +43,22 @@ def get_img_array(in_bucket, out_bucket):
         fn = temp_dir + '/' + str(f)
         k.get_contents_to_filename(fn)
         try:
-            img = skimage.io.imread(fn)
+            img = io.imread(fn)
         except:
+            print 'skipping: {}'.format(i)
             continue
         if img.shape[0] > 50:
             resized = resize(img, (50,50, 3))
             ls.append(np.transpose(resized))
         os.remove(fn)
-        if i % 10000 == 0 and i > 0:
+        if i % 5000 == 0 and i > 0:
             filename = in_bucket + '_{}'.format(i) + '.npy'
             fp = temp_dir2 + '/' + filename
             np.save(fp, np.array(ls))
+            print 'temp_dir: ',os.listdir(temp_dir2)
             k_out = b2.new_key(filename)
             k_out.set_contents_from_filename(fp)
+            ls = []
             os.remove(fp)
 
     filename = in_bucket + '_{}'.format(len(files)) + '.npy'
