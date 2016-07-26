@@ -174,7 +174,7 @@ if __name__ == '__main__':
     for cat, bucket in zip(lists, buckets):
         b = conn.get_bucket(bucket)
         for term in cat:
-            scrape = Scraper(term), 15000, bucket = b,
+            scrape = Scraper(term, 15000, bucket = b,
                              aws_un = access_key,
                              aws_pw = access_secret_key)
             scrape.download_move()
