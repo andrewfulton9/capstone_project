@@ -6,6 +6,7 @@ from skimage.transform import resize
 import numpy as np
 import tempfile
 import os
+import sys
 
 '''
 For each bucket of images
@@ -33,16 +34,20 @@ def get_img_array(bucket):
     temp_dir = tempfile.mkdtemp()
 
     for i, f in enumerate(files):
-        print '{}: processing...'.format(i)
+        if i % 1000 == 0:
+            print '{}-{}: processing...'.format(i, i+1000)
         k = b.get_key(f)
         fn = temp_dir + '/' + str(f)
         k.get_contents_to_filename(fn)
-        img = skimage.io.imread(fn)
+        try:
+            img = skimage.io.imread(fn)
+        except:
+            continue
         if img.shape[0] > 50:
             resized = resize(img, (50,50, 3))
             ls.append(np.transpose(resized))
         os.remove(fn)
-        if i % 10000 == 0:
+        if i % 10000 == 0 and i > 0:
             arr = np.array(ls)
             fn = 'data_arrays/' + bucket + \
                  '_{}'.format(i) + '.npy'
@@ -56,4 +61,5 @@ def get_img_array(bucket):
     return
 
 if __name__ == '__main__':
-    ls = get_img_array('ajfcapstonecars')
+    bucket = sys.argv[1]
+    ls = get_img_array(bucket)
