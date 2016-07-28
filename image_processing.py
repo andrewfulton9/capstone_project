@@ -101,7 +101,7 @@ def make_bucket_dict(buckets_list):
         b_dict[buck] = af.connect_2_s3_bucket(buck)
     return b_dict
 
-def build_np_arrs(df, img_size):
+def build_np_arrs(df, img_size=50):
     buck_dict = make_bucket_dict(df['bucket'].unique())
     temp_dir = tempfile.mkdtemp()
     X = np.empty((len(df.index), 3, img_size, img_size))
