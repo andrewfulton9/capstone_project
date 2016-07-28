@@ -105,7 +105,7 @@ def build_np_arrs(df, img_size=50):
     buck_dict = make_bucket_dict(df['bucket'].unique())
     temp_dir = tempfile.mkdtemp()
     X = np.empty((len(df.index), 3, img_size, img_size))
-    fill = np.empty((3,50,50))
+    fill = np.empty((3,img_size,img_size))
     c = 0
     ind_list = []
     for ind, i in enumerate(df.index.copy()):
@@ -119,7 +119,7 @@ def build_np_arrs(df, img_size=50):
         try:
             img = io.imread(path)
             if img.shape[0] > 50 and ind != 2:
-                resized = np.transpose(resize(img, (50,50, 3)))
+                resized = np.transpose(resize(img, (img_size,img_size, 3)))
             else:
                 raise Exception('')
         except:
