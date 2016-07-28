@@ -82,14 +82,45 @@ def get_url_dict(ls):
 def url_dict_2_df(url_dict):
     d = {}
     for key in url_dict:
-        df = pd.DataFrame({'files': url_dict[key],
+        df = pd.DataFrame({'url': url_dict[key],
                            'bucket': [key for x in url_dict[key]]})
         d[key] = df
     full_df = pd.concat([d[key] for key in d], axis = 0, ignore_index = True)
     return full_df
 
 def sample_df(url_df, sample_size):
+    sample_df = url_df.sample(n=sample_size)
+    return sample_df
 
+def make_bucket_dict(buckets_list):
+    b_dict = {}
+    for buck in buckets_list:
+        b_dict[buck] = af.connect_2_s3_bucket(buck)
+    return b_dict
+
+def build_np_arrs(df):
+    buck_dict = make_bucket_dict(df['bucket'].unique())
+    temp_dir = tempfile.mkdtemp()
+    X = np.empty(len(df.index), 3, 50, 50)
+    c = 0
+    for ind, i in enumerate(df.index.copy()):
+        url = df.ix[i]['url']
+        path = temp_dir + '/' + url
+        k = buck_dict[df.ix[i]['bucket']].get_key(url)
+        k.get_contents_to_filename(path)
+        try:
+            img = io.imread(path)
+        except:
+            df.drop(i, axis = 0, inplace = True)
+        if img.shape[0] > 50:
+            resized = resize(img, (50,50, 3))
+        else:
+            df.drop(i, axis = 0, inplace = True)
+        X[i,:,:,:] = resized
+        os.remove(path)
+    os.removedirs(temp_dir)
+    y = pd.get_dummies(df['bucket']).values
+    return X, y
 
 if __name__ == '__main__':
     # input_bucket = sys.argv[1]
@@ -102,3 +133,5 @@ if __name__ == '__main__':
 
     url_dict = get_url_dict(bucket_ls)
     url_df = url_dict_2_df(url_dict)
+    sampled_df = sample_df(url_df, 10)
+    X, y = build_np_arrs(sampled_df)
