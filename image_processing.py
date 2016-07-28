@@ -116,7 +116,7 @@ def build_np_arrs(df):
             resized = resize(img, (50,50, 3))
         else:
             df.drop(i, axis = 0, inplace = True)
-        X[i,:,:,:] = resized
+        X[i,:,:,:] = np.transpose(resized)
         os.remove(path)
     os.removedirs(temp_dir)
     y = pd.get_dummies(df['bucket']).values
