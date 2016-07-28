@@ -36,9 +36,9 @@ if __name__ == '__main__':
 
     car = concat_arrs('car', b)
     home = concat_arrs('home', b)
-    spec_events = concat_arrs('specevents', b)
-    savings = concat_arrs('saving', b)
-    travel = concat_arrs('travel', b)
+    # spec_events = concat_arrs('specevents', b)
+    # savings = concat_arrs('saving', b)
+    # travel = concat_arrs('travel', b)
 
     ls = [car, home]#, spec_events, savings, travel]
 
