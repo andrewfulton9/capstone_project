@@ -105,22 +105,26 @@ def build_np_arrs(df, img_size=50):
     buck_dict = make_bucket_dict(df['bucket'].unique())
     temp_dir = tempfile.mkdtemp()
     X = np.empty((len(df.index), 3, img_size, img_size))
+    fill = np.empty((3,50,50))
     c = 0
     ind_list = []
     for ind, i in enumerate(df.index.copy()):
+        if ind % 1000 == 0:
+            print 'downloading and transforming imgs {} - {}'.format(ind,
+                                                                     ind + 999)
         url = df.ix[i]['url']
         path = temp_dir + '/' + url
         k = buck_dict[df.ix[i]['bucket']].get_key(url)
         k.get_contents_to_filename(path)
         try:
             img = io.imread(path)
+            if img.shape[0] > 50 and ind != 2:
+                resized = np.transpose(resize(img, (50,50, 3)))
+            else:
+                raise Exception('')
         except:
             df.drop(i, axis = 0, inplace = True)
-        if img.shape[0] > 50 and ind != 2:
-            resized = np.transpose(resize(img, (50,50, 3)))
-        else:
-            df.drop(i, axis = 0, inplace = True)
-            resized = np.empty((3,50,50))
+            resized = fill
             ind_list.append(ind)
         X[ind,:,:,:] = resized
         os.remove(path)
@@ -143,16 +147,22 @@ def save_arrs(arr, bucket, name):
 
 def process_imgs(bucket_ls, img_size = 50, sample_size = None,
                  save_bucket= 'ajfcapstonearrays', name = 'arr'):
+    print 'getting url_dict'
     url_dict = get_url_dict(bucket_ls)
+    print 'building url_df'
     url_df = url_dict_2_df(url_dict)
     if sample_size == 'half':
         sample_size = len(url_df.index)/2
     if sample_size == None:
         sample_size = len(url_df.index)
+    print 'sampling/shuffling df'
     sampled_df = sample_df(url_df, sample_size)
+    print 'building X, y arrays'
     X, y = build_np_arrs(sampled_df, img_size = img_size)
+    print 'saving X array'
     save_arrs(X, save_bucket,
               (name + '_X_{}_{}'.format(img_size, sample_size)))
+    print 'saving y array'
     save_arrs(y, save_bucket,
               (name + '_y_{}_{}'.format(img_size, sample_size)))
 
@@ -165,5 +175,4 @@ if __name__ == '__main__':
     bucket_ls = ['ajfcapstonecars', 'ajfcapstonehome', 'ajfcapstonesavings',
                  'ajfcapstonespecevents', 'ajfcapstonetravel']
 
-    process_imgs(bucket_ls,
-                 name = 'small_test')
+    process_imgs(bucket_ls, sample_size = 10, name = 'small_test')
