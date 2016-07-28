@@ -119,7 +119,7 @@ def build_np_arrs(df, img_size=50):
             resized = resize(img, (50,50, 3))
         else:
             df.drop(i, axis = 0, inplace = True)
-            resized = np.empty(3,50,50)
+            resized = np.empty((3,50,50))
         X[ind,:,:,:] = np.transpose(resized)
         os.remove(path)
     os.removedirs(temp_dir)
