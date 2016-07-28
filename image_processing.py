@@ -98,10 +98,10 @@ def make_bucket_dict(buckets_list):
         b_dict[buck] = af.connect_2_s3_bucket(buck)
     return b_dict
 
-def build_np_arrs(df):
+def build_np_arrs(df, img_size):
     buck_dict = make_bucket_dict(df['bucket'].unique())
     temp_dir = tempfile.mkdtemp()
-    X = np.empty((len(df.index), 3, 50, 50))
+    X = np.empty((len(df.index), 3, img_size, img_size))
     c = 0
     for ind, i in enumerate(df.index.copy()):
         url = df.ix[i]['url']
@@ -112,7 +112,7 @@ def build_np_arrs(df):
             img = io.imread(path)
         except:
             df.drop(i, axis = 0, inplace = True)
-        if img.shape[0] > 50:
+        if img.shape[0] > 50 and ind != 2:
             resized = resize(img, (50,50, 3))
         else:
             df.drop(i, axis = 0, inplace = True)
