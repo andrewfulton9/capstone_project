@@ -118,7 +118,7 @@ def build_np_arrs(df, img_size=50):
         k.get_contents_to_filename(path)
         try:
             img = io.imread(path)
-            if img.shape[0] > 50 and ind != 2:
+            if img.shape[0] > 50:
                 resized = np.transpose(resize(img, (img_size,img_size, 3)))
             else:
                 raise Exception('')
@@ -175,4 +175,4 @@ if __name__ == '__main__':
     bucket_ls = ['ajfcapstonecars', 'ajfcapstonehome', 'ajfcapstonesavings',
                  'ajfcapstonespecevents', 'ajfcapstonetravel']
 
-    process_imgs(bucket_ls, sample_size = 10, name = 'test')
+    process_imgs(bucket_ls, img_size=100)
