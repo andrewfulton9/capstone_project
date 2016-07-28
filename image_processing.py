@@ -106,6 +106,7 @@ def build_np_arrs(df, img_size=50):
     temp_dir = tempfile.mkdtemp()
     X = np.empty((len(df.index), 3, img_size, img_size))
     c = 0
+    ind_list = []
     for ind, i in enumerate(df.index.copy()):
         url = df.ix[i]['url']
         path = temp_dir + '/' + url
@@ -116,12 +117,14 @@ def build_np_arrs(df, img_size=50):
         except:
             df.drop(i, axis = 0, inplace = True)
         if img.shape[0] > 50 and ind != 2:
-            resized = resize(img, (50,50, 3))
+            resized = np.transpose(resize(img, (50,50, 3)))
         else:
             df.drop(i, axis = 0, inplace = True)
             resized = np.empty((3,50,50))
-        X[ind,:,:,:] = np.transpose(resized)
+            ind_list.append(ind)
+        X[ind,:,:,:] = resized
         os.remove(path)
+    X = np.delete(X, ind_list, axis = 0)
     os.removedirs(temp_dir)
     y = pd.get_dummies(df['bucket']).values
     return X, y
