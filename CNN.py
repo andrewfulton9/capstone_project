@@ -37,7 +37,7 @@ def image_model(nb_classes, input_shape = (3,50,50)):
 
     return model
 
-def VGG_16(weights_path=None, in_shape = (3, 50, 50)):
+def VGG_16(weights_path=None, in_shape = (3, 50, 50), name = VGG_16):
     model = Sequential()
     model.add(ZeroPadding2D((1,1),input_shape=in_shape))
     model.add(Convolution2D(64, 3, 3, activation='relu'))
@@ -89,8 +89,20 @@ def VGG_16(weights_path=None, in_shape = (3, 50, 50)):
         sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
         model.compile(optimizer=sgd, loss='categorical_crossentropy')
 
-
     return model
+
+def save_weights(model, name):
+    model.save_weights('weights/' + name + '_weights.h5')
+    return
+
+def fit_model(model, X, y,
+              weights_filename = 'VGG_16'):
+    model.fit(X, y)
+    save_weights(model, weights_filename)
+
+def predict_model(model, weights_path):
+    pass
+
 
 if __name__ == "__main__":
     # im = cv2.resize(cv2.imread('cat.jpg'), (224, 224)).astype(np.float32)
@@ -101,8 +113,8 @@ if __name__ == "__main__":
     # im = np.expand_dims(im, axis=0)
 
     # Test pretrained model
-    model = VGG_16('vgg16_weights.h5')
-    sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
-    model.compile(optimizer=sgd, loss='categorical_crossentropy')
-    out = model.predict(im)
-    print np.argmax(out)
+    # model = VGG_16('vgg16_weights.h5')
+    # sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
+    # model.compile(optimizer=sgd, loss='categorical_crossentropy')
+    # out = model.predict(im)
+    # print np.argmax(out)
