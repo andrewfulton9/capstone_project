@@ -44,18 +44,26 @@ if __name__ == '__main__':
 
     y_ls = []
     for i, arr in enumerate(ls):
+        print 'adding arrs to y_list'
         sub_ls = [i for x in xrange(len(arr))]
         ls.append(sub_ls)
+    print 'made y_ls'
     y_ls = np.array(y_ls)
     y_ls = np.ravel(y_ls)
 
+
+    print 'concatting X_train'
     X_train = np.concatenate([ls], axis=0)
+    print 'converting y_train to dummies'
     y_train = pd.get_dummies(pd.Series(y_ls)).values
 
+
+    print 'shuffling data'
     X_train, y_train = shuffle_data(X_train, y_train)
 
     temp_dir = tempfile.mkdtemp()
     for arr, name in zip([X_train, y_train], ['X_train', 'y_train']):
+        print 'saving X_train and y_train'
         fn = temp_dir + '/' + name + '.npy'
         np.save(fn, arr)
         k = b.new_key(name + '.npy')
