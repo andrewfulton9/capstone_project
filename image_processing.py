@@ -137,6 +137,7 @@ def save_arrs(arr, bucket, name):
     b = af.connect_2_s3_bucket(bucket)
     k = b.new_key(name)
     k.set_contents_from_filename(fp)
+    os.remove(fp)
     os.removedirs(temp_dir)
     return
 
@@ -164,5 +165,5 @@ if __name__ == '__main__':
     bucket_ls = ['ajfcapstonecars', 'ajfcapstonehome', 'ajfcapstonesavings',
                  'ajfcapstonespecevents', 'ajfcapstonetravel']
 
-    process_imgs(bucket_ls, sample_size=10, 
+    process_imgs(bucket_ls, sample_size=10,
                  name = 'small_test')
