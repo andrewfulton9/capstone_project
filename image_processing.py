@@ -101,7 +101,7 @@ def make_bucket_dict(buckets_list):
 def build_np_arrs(df):
     buck_dict = make_bucket_dict(df['bucket'].unique())
     temp_dir = tempfile.mkdtemp()
-    X = np.empty(len(df.index), 3, 50, 50)
+    X = np.empty((len(df.index), 3, 50, 50))
     c = 0
     for ind, i in enumerate(df.index.copy()):
         url = df.ix[i]['url']
