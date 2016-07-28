@@ -75,7 +75,7 @@ def get_img_array(in_bucket, out_bucket):
 def get_url_dict(ls):
     d = {}
     for cat in ls:
-        b = af.connect_2_s3(cat)
+        b = af.connect_2_s3_bucket(cat)
         d[cat] = [f.name for f in b.list()]
     return d
 
