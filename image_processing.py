@@ -85,8 +85,11 @@ def url_dict_2_df(url_dict):
         df = pd.DataFrame({'files': url_dict[key],
                            'bucket': [key for x in url_dict[key]]})
         d[key] = df
-    full_df = pd.concat([d[key] for key in d], axis = 0)
+    full_df = pd.concat([d[key] for key in d], axis = 0, ignore_index = True)
     return full_df
+
+def sample_df(url_df, sample_size):
+
 
 if __name__ == '__main__':
     # input_bucket = sys.argv[1]
