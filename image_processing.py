@@ -7,6 +7,7 @@ import numpy as np
 import tempfile
 import os
 import sys
+import aws_funcs as af
 
 '''
 For each bucket of images
@@ -69,6 +70,13 @@ def get_img_array(in_bucket, out_bucket):
     os.removedirs(temp_dir2)
     os.removedirs(temp_dir)
     return
+
+def get_url_dict(ls):
+    d = {}
+    for cat in ls:
+        b = connect_2_s3(cat)
+        d[cat] = [f.name for f in b.list()]
+    return d
 
 if __name__ == '__main__':
     input_bucket = sys.argv[1]
