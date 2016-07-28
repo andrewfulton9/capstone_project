@@ -40,10 +40,10 @@ if __name__ == '__main__':
     savings = concat_arrs('saving', b)
     travel = concat_arrs('travel', b)
 
-    ls = [car, home, spec_events, savings, travel]
+    ls = [car, home]#, spec_events, savings, travel]
 
     y_ls = []
-    for i, arr in ls:
+    for i, arr in enumerate(ls):
         sub_ls = [i for x in xrange(len(arr))]
         ls.append(sub_ls)
     y_ls = np.array(y_ls)
