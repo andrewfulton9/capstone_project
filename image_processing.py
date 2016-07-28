@@ -88,8 +88,11 @@ def url_dict_2_df(url_dict):
     full_df = pd.concat([d[key] for key in d], axis = 0, ignore_index = True)
     return full_df
 
-def sample_df(url_df, sample_size):
-    sample_df = url_df.sample(n=sample_size)
+def sample_df(url_df, sample_size = None):
+    if sample_size:
+        sample_df = url_df.sample(n=sample_size)
+    else:
+        sample_df = url_df.sample(frac=1)
     return sample_df
 
 def make_bucket_dict(buckets_list):
