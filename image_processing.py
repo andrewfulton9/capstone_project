@@ -8,6 +8,7 @@ import tempfile
 import os
 import sys
 import aws_funcs as af
+import pandas as pd
 
 '''
 For each bucket of images
@@ -74,12 +75,27 @@ def get_img_array(in_bucket, out_bucket):
 def get_url_dict(ls):
     d = {}
     for cat in ls:
-        b = connect_2_s3(cat)
+        b = af.connect_2_s3(cat)
         d[cat] = [f.name for f in b.list()]
     return d
 
-if __name__ == '__main__':
-    input_bucket = sys.argv[1]
-    output_bucket = 'ajfcapstonearrays'
+def url_dict_2_df(url_dict):
+    d = {}
+    for key in url_dict:
+        df = pd.DataFrame({'files': url_dict[key],
+                           'bucket': [key for x in url_dict[key]]})
+        d[key] = df
+    full_df = pd.concat([d[key] for key in d], axis = 0)
+    return full_df
 
-    get_img_array(input_bucket, output_bucket)
+if __name__ == '__main__':
+    # input_bucket = sys.argv[1]
+    # output_bucket = 'ajfcapstonearrays'
+    #
+    # get_img_array(input_bucket, output_bucket)
+
+    bucket_ls = ['ajfcapstonecars', 'ajfcapstonehome', 'ajfcapstonesavings',
+                 'ajfcapstonespecevents', 'ajfcapstonetravel']
+
+    url_dict = get_url_dict(bucket_ls)
+    url_df = url_dict_2_df(url_dict)
