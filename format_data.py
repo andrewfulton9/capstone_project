@@ -46,7 +46,9 @@ if __name__ == '__main__':
     for i, arr in enumerate(ls):
         print 'adding arrs to y_list'
         sub_ls = [i for x in xrange(len(arr))]
+        print 'made sub_ls'
         ls.append(sub_ls)
+        print 'appended sub_ls'
     print 'made y_ls'
     y_ls = np.array(y_ls)
     y_ls = np.ravel(y_ls)
