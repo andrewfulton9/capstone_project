@@ -175,4 +175,4 @@ if __name__ == '__main__':
     bucket_ls = ['ajfcapstonecars', 'ajfcapstonehome', 'ajfcapstonesavings',
                  'ajfcapstonespecevents', 'ajfcapstonetravel']
 
-    process_imgs(bucket_ls, sample_size = 10, name = 'small_test')
+    process_imgs(bucket_ls)
