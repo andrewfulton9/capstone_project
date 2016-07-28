@@ -129,6 +129,32 @@ def build_np_arrs(df, img_size=50):
     y = pd.get_dummies(df['bucket']).values
     return X, y
 
+def save_arrs(arr, bucket, name):
+    temp_dir = tempfile.mkdtemp()
+    name = name + '.npy'
+    fp = temp_dir + '/' + name
+    np.save(fp, arr)
+    b = af.connect_2_s3_bucket(bucket)
+    k = b.new_key(name)
+    k.set_contents_from_filename(fp)
+    os.removedirs(temp_dir)
+    return
+
+def process_imgs(bucket_ls, img_size = 50, sample_size = None,
+                 save_bucket= 'ajfcapstonearrays', name = 'arr'):
+    url_dict = get_url_dict(bucket_ls)
+    url_df = url_dict_2_df(url_dict)
+    if sample_size == 'half':
+        sample_size = len(url_df.index)/2
+    if sample_size == None:
+        sample_size = len(url_df.index)
+    sampled_df = sample_df(url_df, sample_size)
+    X, y = build_np_arrs(sampled_df, img_size = img_size)
+    save_arrs(X, save_bucket,
+              (name + '_X_{}_{}'.format(img_size, sample_size)))
+    save_arrs(y, save_bucket,
+              (name + '_y_{}_{}'.format(img_size, sample_size)))
+
 if __name__ == '__main__':
     # input_bucket = sys.argv[1]
     # output_bucket = 'ajfcapstonearrays'
@@ -138,7 +164,5 @@ if __name__ == '__main__':
     bucket_ls = ['ajfcapstonecars', 'ajfcapstonehome', 'ajfcapstonesavings',
                  'ajfcapstonespecevents', 'ajfcapstonetravel']
 
-    url_dict = get_url_dict(bucket_ls)
-    url_df = url_dict_2_df(url_dict)
-    sampled_df = sample_df(url_df, 10)
-    X, y = build_np_arrs(sampled_df)
+    process_imgs(bucket_ls, sample_size=10, 
+                 name = 'small_test')
