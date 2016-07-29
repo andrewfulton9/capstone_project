@@ -24,55 +24,12 @@ turn list into numpy array
 
 '''
 
-def get_img_array(in_bucket, out_bucket):
-    access_key = os.environ['AWS_ACCESS_KEY_ID1']
-    access_secret_key = os.environ['AWS_SECRET_ACCESS_KEY1']
-    conn = boto.connect_s3(access_key, access_secret_key)
-
-    b1 = conn.get_bucket(in_bucket)
-    b2 = conn.get_bucket(out_bucket)
-
-    files = [f.name for f in b1.list()]
-
-    ls = []
-    temp_dir = tempfile.mkdtemp()
-    temp_dir2 = tempfile.mkdtemp()
-
-    for i, f in enumerate(files):
-        if i % 1000 == 0:
-            print '{}-{}: processing...'.format(i, i+1000)
-        k = b1.get_key(f)
-        fn = temp_dir + '/' + str(f)
-        k.get_contents_to_filename(fn)
-        try:
-            img = io.imread(fn)
-        except:
-            print 'skipping: {}'.format(i)
-            continue
-        if img.shape[0] > 50:
-            resized = resize(img, (50,50, 3))
-            ls.append(np.transpose(resized))
-        os.remove(fn)
-        if i % 5000 == 0 and i > 0:
-            filename = in_bucket + '_{}'.format(i) + '.npy'
-            fp = temp_dir2 + '/' + filename
-            np.save(fp, np.array(ls))
-            print 'temp_dir: ',os.listdir(temp_dir2)
-            k_out = b2.new_key(filename)
-            k_out.set_contents_from_filename(fp)
-            ls = []
-            os.remove(fp)
-
-    filename = in_bucket + '_{}'.format(len(files)) + '.npy'
-    fp = temp_dir2 + '/' + filename
-    np.save(fp, np.array(ls))
-    k = b2.new_key(filename)
-    k.set_contents_from_filename(fp)
-    os.removedirs(temp_dir2)
-    os.removedirs(temp_dir)
-    return
-
 def get_url_dict(ls):
+    '''
+    input: list of S2 buckets
+    output: dictionary where key is name of s2 bucket and value is list of
+            urls within the bucket
+    '''
     d = {}
     for cat in ls:
         b = af.connect_2_s3_bucket(cat)
@@ -80,6 +37,11 @@ def get_url_dict(ls):
     return d
 
 def url_dict_2_df(url_dict):
+    '''
+    input: dictionary of S2 buckets and lists of image files
+    output: dataframe containing all the data from the passed
+            dictionary dictionary. 2 columns (url, bucket)
+    '''
     d = {}
     for key in url_dict:
         df = pd.DataFrame({'url': url_dict[key],
@@ -89,6 +51,10 @@ def url_dict_2_df(url_dict):
     return full_df
 
 def sample_df(url_df, sample_size = None):
+    '''
+    input: df of filenames and their bucket
+    output: randomly sampled dataframe from input dataframe
+    '''
     if sample_size:
         sample_df = url_df.sample(n=sample_size)
     else:
@@ -96,12 +62,22 @@ def sample_df(url_df, sample_size = None):
     return sample_df
 
 def make_bucket_dict(buckets_list):
+    '''
+    input: list of buckets
+    output: dictionary where keys are bucket names and values are the objects
+            connecting to the buckets
+    '''
     b_dict = {}
     for buck in buckets_list:
         b_dict[buck] = af.connect_2_s3_bucket(buck)
     return b_dict
 
 def build_np_arrs(df, img_size=50):
+    '''
+    input: sampled df
+           size to downsample images to
+    output: X(IVs), and y(target) arrays
+    '''
     buck_dict = make_bucket_dict(df['bucket'].unique())
     temp_dir = tempfile.mkdtemp()
     X = np.empty((len(df.index), 3, img_size, img_size))
@@ -134,6 +110,12 @@ def build_np_arrs(df, img_size=50):
     return X, y
 
 def save_arrs(arr, bucket, name):
+    '''
+    input: array to save,
+           bucket to save array to,
+           name to save array as
+    output: none, saves files to bucket as name given
+    '''
     temp_dir = tempfile.mkdtemp()
     name = name + '.npy'
     fp = temp_dir + '/' + name
@@ -147,6 +129,15 @@ def save_arrs(arr, bucket, name):
 
 def process_imgs(bucket_ls, img_size = 50, sample_size = None,
                  save_bucket= 'ajfcapstonearrays', name = 'arr'):
+    '''
+    input: list of buckets,
+           img_size = size to downsample images to
+           sample_size = size or sample to return
+           save_bucket = bucket to save arrays into
+           name = name to save files to will have
+                  _(image_size)_(sample_size).npy appended to end of name
+    output: none, saves arrays to s2
+    '''
     print 'getting url_dict'
     url_dict = get_url_dict(bucket_ls)
     print 'building url_df'
@@ -168,6 +159,12 @@ def process_imgs(bucket_ls, img_size = 50, sample_size = None,
               (name + '_y_{}_{}'.format(img_size, sample_size)))
 
 def get_Xy_data(X_file, y_file, bucket = 'ajfcapstonearrays'):
+    '''
+    input: X_file = name of X data file in S3 bucket
+           y_file = name of y data file in S3 bucket
+           bucket = name of bucket to retrieve files from
+    output: X and y arrays
+    '''
     temp_dir = tempfile.mkdtemp()
     X_path = temp_dir + '/' + X_file + '.npy'
     y_path = temp_dir + '/' + y_file + '.npy'
@@ -189,10 +186,11 @@ if __name__ == '__main__':
     #
     # get_img_array(input_bucket, output_bucket)
 
-    bucket_ls = ['ajfcapstonecars', 'ajfcapstonehome', 'ajfcapstonesavings',
-                 'ajfcapstonespecevents', 'ajfcapstonetravel']
-
-    process_imgs(bucket_ls, img_size=100)
+    # bucket_ls = ['ajfcapstonecars', 'ajfcapstonehome', 'ajfcapstonesavings',
+    #              'ajfcapstonespecevents', 'ajfcapstonetravel']
+    #
+    # process_imgs(bucket_ls, img_size=100)
 
     # process_imgs(bucket_ls, img_size=50, sample_size = 25, name =
     #              'test_testing')
+    pass
