@@ -3,15 +3,19 @@ from keras.layers import Convolution2D, MaxPooling2D, ZeroPadding2D
 from keras.layers.core import Dense, Activation, Flatten, Dropout
 from keras.optimizers import SGD
 
+import tempfile
+
+import image_processing as ip
 
 
-def image_model(nb_classes, input_shape = (3,50,50)):
+
+def image_model(nb_classes, img_size, weights_path):
 
     image_model = Sequential()
 
     image_model.add(Convolution2D(32, 3, 3,
                                   border_mode='valid',
-                                  input_shape=input_shape))
+                                  input_shape=(3, img_size, img_size)))
     image_model.add(Activation('relu'))
     image_model.add(Convolution2D(32, 3, 3))
     image_model.add(Activation('relu'))
@@ -37,9 +41,9 @@ def image_model(nb_classes, input_shape = (3,50,50)):
 
     return model
 
-def VGG_16(weights_path=None, in_shape = (3, 50, 50), name = VGG_16):
+def vgg_16(weights_path=None, img_size=50):
     model = Sequential()
-    model.add(ZeroPadding2D((1,1),input_shape=in_shape))
+    model.add(ZeroPadding2D((1,1),input_shape=(3, img_size, img_size)))
     model.add(Convolution2D(64, 3, 3, activation='relu'))
     model.add(ZeroPadding2D((1,1)))
     model.add(Convolution2D(64, 3, 3, activation='relu'))
@@ -85,9 +89,8 @@ def VGG_16(weights_path=None, in_shape = (3, 50, 50), name = VGG_16):
     if weights_path:
         model.load_weights(weights_path)
 
-    else:
-        sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
-        model.compile(optimizer=sgd, loss='categorical_crossentropy')
+    sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
+    model.compile(optimizer=sgd, loss='categorical_crossentropy')
 
     return model
 
@@ -95,12 +98,13 @@ def save_weights(model, name):
     model.save_weights('weights/' + name + '_weights.h5')
     return
 
-def fit_model(model, X, y,
+def fit_model(model, X_file, y_file, bucket = 'ajfcapstonearrays',
               weights_filename = 'VGG_16'):
+    X, y = ip.get_Xy_data(X_file, y_file, bucket=bucket)
     model.fit(X, y)
     save_weights(model, weights_filename)
 
-def predict_model(model, weights_path):
+def predict_model(img, model, weights_path):
     pass
 
 
@@ -118,3 +122,4 @@ if __name__ == "__main__":
     # model.compile(optimizer=sgd, loss='categorical_crossentropy')
     # out = model.predict(im)
     # print np.argmax(out)
+    pass

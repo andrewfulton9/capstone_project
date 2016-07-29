@@ -155,6 +155,7 @@ def process_imgs(bucket_ls, img_size = 50, sample_size = None,
         sample_size = len(url_df.index)/2
     if sample_size == None:
         sample_size = len(url_df.index)
+    print 'sample_size: {}'.format(sample_size)
     print 'sampling/shuffling df'
     sampled_df = sample_df(url_df, sample_size)
     print 'building X, y arrays'
@@ -166,6 +167,22 @@ def process_imgs(bucket_ls, img_size = 50, sample_size = None,
     save_arrs(y, save_bucket,
               (name + '_y_{}_{}'.format(img_size, sample_size)))
 
+def get_Xy_data(X_file, y_file, bucket = 'ajfcapstonearrays'):
+    temp_dir = tempfile.mkdtemp()
+    X_path = temp_dir + '/' + X_file + '.npy'
+    y_path = temp_dir + '/' + y_file + '.npy'
+    b = af.connect_2_s3_bucket(bucket)
+    x_key = b.get_key(X_file)
+    x_key.get_contents_to_filename(X_path)
+    y_key = b.get_key(y_file)
+    y_key.get_contents_to_filename(y_path)
+    X = np.load(X_path)
+    y = np.load(y_path)
+    for f in [X_path, y_path]:
+        os.remove(f)
+    os.removedirs(temp_dir)
+    return X, y
+
 if __name__ == '__main__':
     # input_bucket = sys.argv[1]
     # output_bucket = 'ajfcapstonearrays'
@@ -175,4 +192,8 @@ if __name__ == '__main__':
     bucket_ls = ['ajfcapstonecars', 'ajfcapstonehome', 'ajfcapstonesavings',
                  'ajfcapstonespecevents', 'ajfcapstonetravel']
 
-    process_imgs(bucket_ls, img_size=100)
+    process_imgs(bucket_ls, img_size=50, sample_size = 100,
+                 name = 'test_training')
+
+    process_imgs(bucket_ls, img_size=50, sample_size = 25, name =
+                 'test_testing')
