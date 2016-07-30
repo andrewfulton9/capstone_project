@@ -215,8 +215,8 @@ if __name__ == '__main__':
     #
     # get_img_array(input_bucket, output_bucket)
 
-    # bucket_ls = ['ajfcapstonecars', 'ajfcapstonehome', 'ajfcapstonesavings',
-    #              'ajfcapstonespecevents', 'ajfcapstonetravel']
+    bucket_ls = ['ajfcapstonecars', 'ajfcapstonehome', 'ajfcapstonesavings',
+                 'ajfcapstonespecevents', 'ajfcapstonetravel']
     #
     # process_imgs(bucket_ls, img_size=100)
 
