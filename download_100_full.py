@@ -3,4 +3,4 @@ from image_processing import *
 bucket_ls = ['ajfcapstonecars', 'ajfcapstonehome', 'ajfcapstonesavings',
                  'ajfcapstonespecevents', 'ajfcapstonetravel']
 
-process_imgs(bucket_ls)
+bin_save_arrs(bucket_ls, bin_size = 100000)

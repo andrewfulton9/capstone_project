@@ -112,7 +112,7 @@ class Scraper(object):
         INPUT: None
         OUTPUT: None
 
-        meat of the class. This downloads the photos
+        Meat of the class. This downloads the photos
         '''
         for x in range(100, len(self.all_urls)+1, 100):
             lower = x - 100

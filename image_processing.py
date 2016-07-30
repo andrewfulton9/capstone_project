@@ -127,6 +127,35 @@ def save_arrs(arr, bucket, name):
     os.removedirs(temp_dir)
     return
 
+def bin_save_arrs(bucket_ls, img_size = 50,
+                  sample_size = None, bin_size=None,
+                  save_bucket= 'ajfcapstonearrays', name = 'arr'):
+    print 'getting url_dict'
+    url_dict = get_url_dict(bucket_ls)
+    print 'building url_df'
+    url_df = url_dict_2_df(url_dict)
+    if sample_size == 'half':
+        sample_size = len(url_df.index)/2
+    if sample_size == None:
+        sample_size = len(url_df.index)
+    print 'sample_size: {}'.format(sample_size)
+    print 'sampling/shuffling df'
+    sampled_df = sample_df(url_df, sample_size)
+    for x in xrange(0, len(sampled_df.index), bin_size):
+        print 'building bin: {}'.format(x)
+        bin_df = sampled_df.iloc[x:x+bin_size-1,:]
+        print 'building X, y arrays'
+        X, y = build_np_arrs(bin_df, img_size = img_size)
+        print 'saving X array'
+        save_arrs(X, save_bucket,
+                  (name + '_X_{}_{}_bin{}'.format(img_size, sample_size, x)))
+        print 'saving y array'
+        save_arrs(y, save_bucket,
+                  (name + '_y_{}_{}_bin{}'.format(img_size, sample_size, x)))
+    print 'complete'
+
+
+
 def process_imgs(bucket_ls, img_size = 50, sample_size = None,
                  save_bucket= 'ajfcapstonearrays', name = 'arr'):
     '''
@@ -193,4 +222,7 @@ if __name__ == '__main__':
 
     # process_imgs(bucket_ls, img_size=50, sample_size = 25, name =
     #              'test_testing')
-    pass
+
+    bin_save_arrs(bucket_ls, img_size = 100,
+                  sample_size = None, bin_size=100000,
+                  save_bucket= 'ajfcapstonearrays', name = 'arr'):
