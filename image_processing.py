@@ -143,7 +143,7 @@ def bin_save_arrs(bucket_ls, img_size = 50,
     sampled_df = sample_df(url_df, sample_size)
     for x in xrange(0, len(sampled_df.index), bin_size):
         print 'building bin: {}'.format(x)
-        bin_df = sampled_df.iloc[x:x+bin_size-1,:]
+        bin_df = sampled_df.iloc[x:x+bin_size-1,:].copy()
         print 'building X, y arrays'
         X, y = build_np_arrs(bin_df, img_size = img_size)
         print 'saving X array'
