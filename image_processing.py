@@ -225,4 +225,4 @@ if __name__ == '__main__':
 
     bin_save_arrs(bucket_ls, img_size = 100,
                   sample_size = None, bin_size=100000,
-                  save_bucket= 'ajfcapstonearrays', name = 'arr'):
+                  save_bucket= 'ajfcapstonearrays', name = 'arr')
