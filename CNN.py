@@ -178,7 +178,9 @@ def fit_model_batches(model, X_filename, bucket = 'ajfcapstonearrays',
     output: new weights are saved
     '''
     b = af.connect_2_s3_bucket(bucket)
-    files = [f.name for f in b.list() if X_filename in f.name]
+    x_files = [f.name for f in b.list() if X_filename in f.name]
+    y_files = [get_y_filename(f) for f in x_files]
+    return x_files, y_files
 
 
 
