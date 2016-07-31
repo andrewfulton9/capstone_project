@@ -94,6 +94,65 @@ def vgg_16(weights_path=None, img_size=50):
 
     return model
 
+def vgg_19(weights_path=None, img_size=50):
+    model = Sequential()
+    model.add(ZeroPadding2D((1,1),input_shape=(3, img_size, img_size)))
+    model.add(Convolution2D(64, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(64, 3, 3, activation='relu'))
+    model.add(MaxPooling2D((2,2), strides=(2,2)))
+
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(128, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(128, 3, 3, activation='relu'))
+    model.add(MaxPooling2D((2,2), strides=(2,2)))
+
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(256, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(256, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(256, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(256, 3, 3, activation='relu'))
+    model.add(MaxPooling2D((2,2), strides=(2,2)))
+
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(MaxPooling2D((2,2), strides=(2,2)))
+
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(MaxPooling2D((2,2), strides=(2,2)))
+
+    model.add(Flatten())
+    model.add(Dense(4096, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(4096, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(5, activation='softmax'))
+
+    if weights_path:
+        model.load_weights(weights_path)
+
+    sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
+    model.compile(optimizer=sgd, loss='categorical_crossentropy')
+
+    return model
+
 def save_weights(model, name):
     model.save_weights('weights/' + name + '_weights.h5')
     return
@@ -104,8 +163,34 @@ def fit_model(model, X_file, y_file, bucket = 'ajfcapstonearrays',
     model.fit(X, y)
     save_weights(model, weights_filename)
 
-def predict_model(img, model, weights_path):
-    pass
+def get_y_filename(x_filename):
+    ls_x_filename = list(x_filename)
+    ls_x_filename[4] = 'y'
+    y_filename = ''.join(ls_x_filename)
+    return y_filename
+
+def fit_model_batches(model, X_filename, bucket = 'ajfcapstonearrays',
+                      weights_filename='VGG_16_batch'):
+    '''
+    input: model = model to fit
+           filename = name batches are saved under
+           weights_filename = filename under which weights are saved
+    output: new weights are saved
+    '''
+    b = af.connect_2_s3_bucket(bucket)
+    files = [f.name for f in b.list() if X_filename in f.name]
+
+
+
+
+
+def predict_model(img, model):
+    probs = model.predict_proba(img)
+    cats = model.predict_classes(img)
+    return probs, cats
+
+def evaluate_model(y_test, y_pred):
+
 
 
 if __name__ == "__main__":
