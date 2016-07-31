@@ -190,6 +190,7 @@ def predict_model(img, model):
     return probs, cats
 
 def evaluate_model(y_test, y_pred):
+    pass
 
 
 
