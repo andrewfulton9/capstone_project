@@ -6,6 +6,7 @@ from keras.optimizers import SGD
 import tempfile
 
 import image_processing as ip
+import aws_funcs as af
 
 
 
@@ -169,7 +170,7 @@ def get_y_filename(x_filename):
     y_filename = ''.join(ls_x_filename)
     return y_filename
 
-def fit_model_batches(model, X_filename, bucket = 'ajfcapstonearrays',
+def fit_model_batches(X_filename, model=None, bucket = 'ajfcapstonearrays',
                       weights_filename='VGG_16_batch'):
     '''
     input: model = model to fit
