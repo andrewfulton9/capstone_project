@@ -181,7 +181,14 @@ def fit_model_batches(X_filename, model=None, bucket = 'ajfcapstonearrays',
     b = af.connect_2_s3_bucket(bucket)
     x_files = [f.name for f in b.list() if X_filename in f.name]
     y_files = [get_y_filename(f) for f in x_files]
-    return x_files, y_files
+    X_test = x_files[-1]
+    y_test = y_files[-1]
+    for X_train, y_train in zip(x_files[:-1], y_files[:-1]):
+        print 'fitting: X = {}, y = {}'.format(X_train, y_train)
+        X,y = ip.get_Xy_data(X_train,y_train, bucket=bucket)
+        model.fit(X,y)
+    save_weights(model, weights_filename)
+    return X,y
 
 
 
