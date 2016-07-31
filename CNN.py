@@ -165,9 +165,9 @@ def fit_model(model, X_file, y_file, bucket = 'ajfcapstonearrays',
     save_weights(model, weights_filename)
 
 def get_y_filename(x_filename):
-    ls_x_filename = list(x_filename)
-    ls_x_filename[4] = 'y'
-    y_filename = ''.join(ls_x_filename)
+    ls_x_filename = x_filename.split('_')
+    ls_x_filename[1] = 'y'
+    y_filename = '_'.join(ls_x_filename)
     return y_filename
 
 def fit_model_batches(X_filename, model=None, bucket = 'ajfcapstonearrays',
@@ -183,16 +183,16 @@ def fit_model_batches(X_filename, model=None, bucket = 'ajfcapstonearrays',
     y_files = [get_y_filename(f) for f in x_files]
     X_test = x_files[-1]
     y_test = y_files[-1]
+    num_batches = len(x_files[:-1])
+    count = 1
     for X_train, y_train in zip(x_files[:-1], y_files[:-1]):
-        print 'fitting: X = {}, y = {}'.format(X_train, y_train)
+        print 'fitting batch {} of {}:\n X = {}, y = {}'.format(\
+                            count, num_batches, X_train, y_train)
         X,y = ip.get_Xy_data(X_train,y_train, bucket=bucket)
-        model.fit(X,y)
+        model.train_on_batch(X,y)
+        count += 1
     save_weights(model, weights_filename)
     return X,y
-
-
-
-
 
 def predict_model(img, model):
     probs = model.predict_proba(img)
