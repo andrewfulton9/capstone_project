@@ -136,8 +136,10 @@ def bin_save_arrs(bucket_ls, img_size = 50,
     url_df = url_dict_2_df(url_dict)
     if sample_size == 'half':
         sample_size = len(url_df.index)/2
+        sample_str = 'half'
     if sample_size == None:
         sample_size = len(url_df.index)
+        sample_str = 'full'
     print 'sample_size: {}'.format(sample_size)
     print 'sampling/shuffling df'
     sampled_df = sample_df(url_df, sample_size)
@@ -148,10 +150,10 @@ def bin_save_arrs(bucket_ls, img_size = 50,
         X, y = build_np_arrs(bin_df, img_size = img_size)
         print 'saving X array'
         save_arrs(X, save_bucket,
-                  (name + '_X_{}_{}_bin{}'.format(img_size, sample_size, x)))
+                  (name + '_X_{}_{}_bin{}'.format(img_size, sample_str, x)))
         print 'saving y array'
         save_arrs(y, save_bucket,
-                  (name + '_y_{}_{}_bin{}'.format(img_size, sample_size, x)))
+                  (name + '_y_{}_{}_bin{}'.format(img_size, sample_str, x)))
     print 'complete'
 
 
