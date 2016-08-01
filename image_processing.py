@@ -173,8 +173,10 @@ def process_imgs(bucket_ls, img_size = 50, sample_size = None,
     url_df = url_dict_2_df(url_dict)
     if sample_size == 'half':
         sample_size = len(url_df.index)/2
+        sample_str = 'half'
     if sample_size == None:
         sample_size = len(url_df.index)
+        sample_str = 'full'
     print 'sample_size: {}'.format(sample_size)
     print 'sampling/shuffling df'
     sampled_df = sample_df(url_df, sample_size)
@@ -182,10 +184,10 @@ def process_imgs(bucket_ls, img_size = 50, sample_size = None,
     X, y = build_np_arrs(sampled_df, img_size = img_size)
     print 'saving X array'
     save_arrs(X, save_bucket,
-              (name + '_X_{}_{}'.format(img_size, sample_size)))
+              (name + '_X_{}_{}'.format(img_size, sample_str)))
     print 'saving y array'
     save_arrs(y, save_bucket,
-              (name + '_y_{}_{}'.format(img_size, sample_size)))
+              (name + '_y_{}_{}'.format(img_size, sample_str)))
 
 def get_Xy_data(X_file, y_file, bucket = 'ajfcapstonearrays'):
     '''
@@ -224,5 +226,5 @@ if __name__ == '__main__':
     #              'test_testing')
 
     bin_save_arrs(bucket_ls, img_size = 100,
-                  sample_size = None, bin_size=10000,
+                  sample_size = None, bin_size=1000,
                   save_bucket= 'ajfcapstonearrays', name = 'arr')
