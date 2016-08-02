@@ -173,6 +173,7 @@ def process_imgs(bucket_ls, img_size = 50, sample_size = None,
     url_dict = get_url_dict(bucket_ls)
     print 'building url_df'
     url_df = url_dict_2_df(url_dict)
+    sample_str = sample_size
     if sample_size == 'half':
         sample_size = len(url_df.index)/2
         sample_str = 'half'
