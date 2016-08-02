@@ -227,6 +227,6 @@ if __name__ == '__main__':
     # process_imgs(bucket_ls, img_size=50, sample_size = 25, name =
     #              'test_testing')
 
-    bin_save_arrs(bucket_ls, img_size = 100,
-                  sample_size = None, bin_size=1000,
+    bin_save_arrs(bucket_ls, img_size = 50,
+                  sample_size = 5000, bin_size=1000,
                   save_bucket= 'ajfcapstonearrays', name = 'arr')
