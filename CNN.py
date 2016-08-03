@@ -206,8 +206,8 @@ def fit_model_batches(X_filename, model=None, bucket = 'ajfcapstonearrays',
     num_batches = len(x_files[:-1])
     count = 1
     for X_train, y_train in zip(x_files[:-1], y_files[:-1]):
-        #print 'fitting batch {} of {}:\n X = {}, y = {}'.format(\
-        #                    count, num_batches, X_train, y_train)
+        print 'fitting batch {} of {}:\n X = {}, y = {}'.format(\
+                            count, num_batches, X_train, y_train)
         X,y = ip.get_Xy_data(X_train,y_train, bucket=bucket)
         model.train_on_batch(X,y)
         count += 1
