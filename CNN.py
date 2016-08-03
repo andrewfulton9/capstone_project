@@ -90,10 +90,29 @@ def vgg_16(weights_path=None, img_size=50):
     if weights_path:
         model.load_weights(weights_path)
 
-    sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
-    model.compile(optimizer=sgd, loss='categorical_crossentropy')
+    #sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
+    #model.compile(optimizer=sgd, loss='categorical_crossentropy')
+
+    model.compile(optimizer = 'adam', loss = 'categorical_crossentropy')
 
     return model
+
+def basic(img_size):
+    model = Sequential()
+    model.add(ZeroPadding2D((1,1),input_shape=(3, img_size, img_size)))
+    model.add(Convolution2D(64, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(64, 3, 3, activation='relu'))
+    model.add(MaxPooling2D((2,2), strides=(2,2)))
+
+    model.add(Flatten())
+    model.add(Dense(4096, activation='relu'))
+    model.add(Dropout(0.5))
+
+    model.compile(optimizer='sgd', loss='categorical_crossentropy')
+
+    return model
+
 
 def vgg_19(weights_path=None, img_size=50):
     model = Sequential()
