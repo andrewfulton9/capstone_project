@@ -108,7 +108,7 @@ def basic(img_size):
     model.add(Flatten())
     model.add(Dense(1024, activation='relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(5, activation='rule'))
+    model.add(Dense(5, activation='softmax'))
 
     model.compile(optimizer='adam', loss='categorical_crossentropy')
 
