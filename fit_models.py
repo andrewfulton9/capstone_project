@@ -16,7 +16,7 @@ if __name__ == '__main__':
     model = CNN.vgg_16(img_size=50)
 
     X_test, y_test = CNN.fit_model_batches('arr_X_50_full', model = model,
-                                    weights_filename='100_full_vgg16_batchfit')
+                                    weights_filename='50_full_vgg16_batchfit')
 
     save_weights()
 
