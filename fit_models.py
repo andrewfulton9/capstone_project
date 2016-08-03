@@ -33,5 +33,5 @@ if __name__ == '__main__':
     b.new_key('50_full_vgg16_X_test.npy')
     b.set_contents_from_filename('X_test.npy')
 
-    b.new_key('500_full_vgg16_y_test.npy')
+    b.new_key('5 0_full_vgg16_y_test.npy')
     b.set_contents_from_filename('y_test.npy')
