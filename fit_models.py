@@ -2,6 +2,7 @@ import CNN
 import image_processing as ip
 import score_models as sm
 import aws_funcs as af
+import numpy as np
 
 
 def save_weights(bucket = 'ajfcapstoneweights'):
@@ -16,6 +17,8 @@ if __name__ == '__main__':
 
     X_test, y_test = CNN.fit_model_batches('arr_X_50_full', model = model,
                                     weights_filename='100_full_vgg16_batchfit')
+
+    save_weights()
 
     probs, cats = CNN.predict_model(X_test, model)
 
@@ -32,5 +35,3 @@ if __name__ == '__main__':
 
     b.new_key('500_full_vgg16_y_test.npy')
     b.set_contents_from_filename('y_test.npy')
-
-    save_weights()
