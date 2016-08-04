@@ -209,7 +209,7 @@ def fit_model_batches(X_filename, model=None, bucket = 'ajfcapstonearrays',
         print 'fitting batch {} of {}:\n X = {}, y = {}'.format(\
                             count, num_batches, X_train, y_train)
         X,y = ip.get_Xy_data(X_train,y_train, bucket=bucket)
-        model.train_on_batch(X,y)
+        model.fit(X,y, nb_epoch = 25, batch_size = 250)
         count += 1
     save_weights(model, weights_filename)
     X_test, y_test = ip.get_Xy_data(X_test, y_test, bucket = bucket)

@@ -26,7 +26,7 @@ if __name__ == '__main__':
     np.save('50_full_basic_probs.npy', probs)
     np.save('50_full_basic_cats.npy', cats)
 
-    b = af.connect_2_s3('ajfcapstonearrays')
+    b = af.connect_2_s3_bucket('ajfcapstonearrays')
 
     np.save('X_test.npy', X_test)
     np.save('y_test.npy', y_test)
