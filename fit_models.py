@@ -14,7 +14,7 @@ def save_weights(bucket = 'ajfcapstoneweights'):
         k.set_contents_from_filename(path)
 
 if __name__ == '__main__':
-    model = CNN.VGG_16(img_size=50)
+    model = CNN.vgg_16(img_size=50)
 
     X_test, y_test = CNN.fit_model_batches('arr_X_50_full', model = model,
                                     weights_filename='50_full_VGG16_batchfit')
