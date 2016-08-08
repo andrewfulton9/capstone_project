@@ -10,20 +10,6 @@ import sys
 import aws_funcs as af
 import pandas as pd
 
-'''
-For each bucket of images
-get all the urls for each image
-instantiate and empty list
-download each image
-    get the array version of each image
-    resize each array
-    transpose the resized array
-    add the transposed array to a list
-    delete the image from the file
-turn list into numpy array
-
-'''
-
 def get_url_dict(ls):
     '''
     input: list of S2 buckets
@@ -134,6 +120,7 @@ def bin_save_arrs(bucket_ls, img_size = 50,
     url_dict = get_url_dict(bucket_ls)
     print 'building url_df'
     url_df = url_dict_2_df(url_dict)
+    sample_str = sample_size
     if sample_size == 'half':
         sample_size = len(url_df.index)/2
         sample_str = 'half'
@@ -167,12 +154,15 @@ def process_imgs(bucket_ls, img_size = 50, sample_size = None,
            save_bucket = bucket to save arrays into
            name = name to save files to will have
                   _(image_size)_(sample_size).npy appended to end of name
-    output: none, saves arrays to s2
+    output: none
+
+    saves arrays to s2
     '''
     print 'getting url_dict'
     url_dict = get_url_dict(bucket_ls)
     print 'building url_df'
     url_df = url_dict_2_df(url_dict)
+    sample_str = sample_size
     if sample_size == 'half':
         sample_size = len(url_df.index)/2
         sample_str = 'half'
@@ -227,6 +217,6 @@ if __name__ == '__main__':
     # process_imgs(bucket_ls, img_size=50, sample_size = 25, name =
     #              'test_testing')
 
-    bin_save_arrs(bucket_ls, img_size = 100,
+    bin_save_arrs(bucket_ls, img_size = 50,
                   sample_size = None, bin_size=1000,
                   save_bucket= 'ajfcapstonearrays', name = 'arr')
