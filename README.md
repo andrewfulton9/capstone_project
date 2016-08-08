@@ -16,14 +16,18 @@ Second due to my background in Neuroscience, I think the idea of method of analy
 
 ##### Computing
   - AWS EC2
+
 ##### Storage
   - AWS S3
+
 ##### Scraping
   - BeautifulSoup
+
 ##### Processing
   - Numpy
   - Pandas
   - SciKit-Image
+
 ##### Neural Nets
   - Keras
   - Theano
