@@ -19,6 +19,7 @@ The first step of my project was getting a training set on which to train my mod
   - home expenses,
   - special events
   -  and general savings.
+
   Next I began looking at places to scrape from. I found a stock photo site that I could get ~10,000 images per keyword. My goal was to get around 100,000 images per category since I expected a fair amount of leakage between groups and so I came up with 10-15 keywords per category to scrape from. To do the scraping I used a python library called Beautiful Soup. I used an EC2 AWS machine to run the program and saved the images that I scraped into AWS S3 buckets
 
 ### Processing
