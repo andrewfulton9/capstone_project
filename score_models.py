@@ -1,6 +1,21 @@
 import pandas as pd
 import numpy as np
 
+def predict_model(img, model):
+    '''
+    INPUT:
+        img: array of image(s) to classify
+        model: fitted model to predict on
+    OUTPUT:
+        probs: array of probabilities of an observation being in each class
+        cats: array of predicted categories for each observation
+
+    predicts the probabilities and predicted category
+    '''
+    probs = model.predict_proba(img)
+    cats = model.predict_classes(img)
+    return probs, cats
+
 def fix_y_test_arr(y_arr):
     df = pd.DataFrame(y_arr)
     df[1] = df[1].apply(lambda x: 2 if x == 1 else 0)
