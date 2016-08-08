@@ -8,19 +8,36 @@ The goal of this project is to classify images that users upload to represent th
 
 ### Motivations
 
-My interest in this project largely arised from two things. First American's savings habits are pretty abysmal at this point. For instance according to a survey conducted by GOBankingRates.com, 62% of Americans have less than $1000 in savings and 21% don't even have a savings account
+My interest in this completing project largely arised from two things. First American's savings habits have become pretty abysmal as this point, with people spending more and saving less. For example, according to a survey conducted by GOBankingRates.com, 62% of Americans have less than $1000 in savings and 21% don't even have a savings account.
 
 Second due to my background in Neuroscience, I think the idea of method of analysis that is based on how neurons in the central nervous system communicate is really interesting and so I wanted to broaden my understanding of neural nets and practice implementing them
+
+### Tools
+
+##### Computing
+  - AWS EC2
+##### Storage
+  - AWS S3
+##### Scraping
+  - BeautifulSoup
+##### Processing
+  - Numpy
+  - Pandas
+  - SciKit-Image
+##### Neural Nets
+  - Keras
+  - Theano
 
 ### Scraping
 
 The first step of my project was getting a training set on which to train my model on. I began by deciding which categories to use to train my model. Based on the data that I got from Dobot I settled on the following five:
-  - Travel,
-  - home expenses,
-  - special events
-  -  and general savings.
+  - Car expenses
+  - Home expenses
+  - Special events
+  - General savings
+  - Travel
 
-Next I began looking at places to scrape from. I found a stock photo site that I could get ~10,000 images per keyword. My goal was to get around 100,000 images per category since I expected a fair amount of leakage between groups and so I came up with 10-15 keywords per category to scrape from. To do the scraping I used a python library called Beautiful Soup. I used an EC2 AWS machine to run the program and saved the images that I scraped into AWS S3 buckets
+Next I began looking at places to scrape from. My goal was to get around 100,000 images per category since I expected a fair amount of leakage between groups and because neural nets are notoriously expensive to train. I found a stock photo site that I could get ~10,000 images per keyword so I next came up with 10-15 keywords per category to scrape from.
 
 ### Processing
 
