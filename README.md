@@ -1,10 +1,10 @@
-# savings_goal_predictor-
+# Dobot Image Classifier
 
-A project in collaboration with Dobot, Inc. with the purpose of helping users determine appropriate savings goals
+A project in collaboration with Dobot, Inc. with the purpose of helping users determine appropriate savings goals based on images users upload to represent their savings goals
 
 ### Goal
 
-The goal of this project is to use images taht users upload to represent what it is that they are saving for to understand what those users savings goals are
+The goal of this project is to classify images that users upload to represent their savings goals in order to better understand what users savings goals are.
 
 ### Motivations
 
