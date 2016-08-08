@@ -89,11 +89,11 @@ def save_weights_remote(bucket = 'ajfcapstoneweights'):
 
 if __name__ == '__main__':
     # build model to fit
-    model = CNN.basic(img_size=100)
+    model = CNN.basic(img_size=50)
 
     # fit models and return files to use for testing
-    X_test, y_test = fit_model_batches('arr_X_100_full', model = model,
-                                    weights_filename='100_full_basic_batchfit')
+    X_test, y_test = fit_model_batches('arr_X_50_full', model = model,
+                                    weights_filename='50_full_basic_batchfit')
 
     # save weights to s3 bucket
     save_weights_remote()
@@ -103,8 +103,8 @@ if __name__ == '__main__':
     probs, cats = sm.predict_model(X_test, model)
 
     # save the probability and category arrays
-    np.save('100_full_basic_probs.npy', probs)
-    np.save('100_full_basic_cats.npy', cats)
+    np.save('50_full_basic_probs.npy', probs)
+    np.save('50_full_basic_cats.npy', cats)
 
     # connect to S3 bucket
     b = af.connect_2_s3_bucket('ajfcapstonearrays')
@@ -114,9 +114,9 @@ if __name__ == '__main__':
     np.save('y_test.npy', y_test)
 
     # save X_test to S3 bucket
-    k = b.new_key('100_full_basic_X_test.npy')
+    k = b.new_key('50_full_basic_X_test.npy')
     k.set_contents_from_filename('X_test.npy')
 
     # save y_test to S3 bucket
-    k = b.new_key('100_full_basic_y_test.npy')
+    k = b.new_key('50_full_basic_y_test.npy')
     k.set_contents_from_filename('y_test.npy')
