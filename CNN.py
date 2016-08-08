@@ -8,41 +8,15 @@ import tempfile
 import image_processing as ip
 import aws_funcs as af
 
+def vgg_16(img_size=50, weights_path=None):
+    '''
+    INPUT: img_size = size of images to train/ model was trained on
+           weights_path = path to get weights of trained model
+    OUTPUT: the fitted/unfitted model depending on if a weights path was
+            specified
 
-
-def image_model(nb_classes, img_size, weights_path):
-
-    image_model = Sequential()
-
-    image_model.add(Convolution2D(32, 3, 3,
-                                  border_mode='valid',
-                                  input_shape=(3, img_size, img_size)))
-    image_model.add(Activation('relu'))
-    image_model.add(Convolution2D(32, 3, 3))
-    image_model.add(Activation('relu'))
-    image_model.add(MaxPooling2D(pool_size=(2, 2)))
-
-    image_model.add(Convolution2D(64, 3, 3,
-                                  border_mode='valid'))
-    image_model.add(Activation('relu'))
-    image_model.add(Convolution2D(64, 3, 3))
-    image_model.add(Activation('relu'))
-    image_model.add(MaxPooling2D(pool_size=(2, 2)))
-
-    image_model.add(Flatten())
-    image_model.add(Dense(128))
-
-    image_model.add(Dense(nb_classes))
-    image_model.add(Activation('sigmoid'))
-
-    image_model.compile(loss = 'binary_crossentropy',
-                  optimizer = 'adadelta',
-                  metrics = ['accuracy', 'recall']
-                )
-
-    return model
-
-def vgg_16(weights_path=None, img_size=50):
+    The full vgg-16 model
+    '''
     model = Sequential()
     model.add(ZeroPadding2D((1,1),input_shape=(3, img_size, img_size)))
     model.add(Convolution2D(64, 3, 3, activation='relu'))
@@ -97,7 +71,15 @@ def vgg_16(weights_path=None, img_size=50):
 
     return model
 
-def basic(img_size):
+def basic(img_size, weights_path = None):
+    '''
+    INPUT: img_size = size of images to train/ model was trained on
+           weights_path = path to get weights of trained model
+    OUTPUT: the fitted/unfitted model depending on if a weights path was
+            specified
+
+    A very basic convolutional neural net for testing
+    '''
     model = Sequential()
     model.add(ZeroPadding2D((1,1),input_shape=(3, img_size, img_size)))
     model.add(Convolution2D(64, 3, 3, activation='relu'))
@@ -116,6 +98,14 @@ def basic(img_size):
 
 
 def vgg_19(weights_path=None, img_size=50):
+    '''
+    INPUT: img_size = size of images to train/ model was trained on
+           weights_path = path to get weights of trained model
+    OUTPUT: the fitted/unfitted model depending on if a weights path was
+            specified
+
+    The full vgg-16 model with 19 layers
+    '''
     model = Sequential()
     model.add(ZeroPadding2D((1,1),input_shape=(3, img_size, img_size)))
     model.add(Convolution2D(64, 3, 3, activation='relu'))
@@ -175,16 +165,38 @@ def vgg_19(weights_path=None, img_size=50):
     return model
 
 def save_weights(model, name):
+    '''
+    INPUT: model = fitted model
+           name = filename for weights to save
+    OUTPUT: None
+
+    save the weights from a fitted model to local weights folder
+    '''
     model.save_weights('weights/' + name + '_weights.h5')
     return
 
 def fit_model(model, X_file, y_file, bucket = 'ajfcapstonearrays',
               weights_filename = 'VGG_16'):
+    '''
+    INPUT:
+        model = model to fit
+        X_file = filename of file in S3 bucket to use for your X training data
+        y_file = filename of file in S3 bucket to use for you y training data
+        bucket = bucket to get X_file and y_file from
+        weights_filename = filename to save weights under
+    OUTPUT: None
+
+    fits a model
+    '''
     X, y = ip.get_Xy_data(X_file, y_file, bucket=bucket)
     model.fit(X, y)
     save_weights(model, weights_filename)
 
 def get_y_filename(x_filename):
+    '''
+    INPUT: x_filename with X training/testing data
+    OUTPUT: y_filename with y data corresponding to x_filename data
+    '''
     ls_x_filename = x_filename.split('_')
     ls_x_filename[1] = 'y'
     y_filename = '_'.join(ls_x_filename)
@@ -196,7 +208,10 @@ def fit_model_batches(X_filename, model=None, bucket = 'ajfcapstonearrays',
     input: model = model to fit
            filename = name batches are saved under
            weights_filename = filename under which weights are saved
-    output: new weights are saved
+    output: None
+
+    fits a model iteratively through batches of data. For large training data
+    sets
     '''
     b = af.connect_2_s3_bucket(bucket)
     x_files = [f.name for f in b.list() if X_filename in f.name]
@@ -216,14 +231,19 @@ def fit_model_batches(X_filename, model=None, bucket = 'ajfcapstonearrays',
     return X_test, y_test
 
 def predict_model(img, model):
+    '''
+    INPUT:
+        img: array of image(s) to classify
+        model: fitted model to predict on
+    OUTPUT:
+        probs: array of probabilities of an observation being in each class
+        cats: array of predicted categories for each observation
+
+    predicts the probabilities and predicted category
+    '''
     probs = model.predict_proba(img)
     cats = model.predict_classes(img)
     return probs, cats
-
-def evaluate_model(y_test, y_pred):
-    pass
-
-
 
 if __name__ == "__main__":
     # im = cv2.resize(cv2.imread('cat.jpg'), (224, 224)).astype(np.float32)
