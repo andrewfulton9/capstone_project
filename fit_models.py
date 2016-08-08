@@ -103,8 +103,8 @@ if __name__ == '__main__':
     probs, cats = sm.predict_model(X_test, model)
 
     # save the probability and category arrays
-    np.save('50_full_VGG16_probs.npy', probs)
-    np.save('50_full_VGG16_cats.npy', cats)
+    np.save('100_full_basic_probs.npy', probs)
+    np.save('100_full_basic_cats.npy', cats)
 
     # connect to S3 bucket
     b = af.connect_2_s3_bucket('ajfcapstonearrays')
@@ -114,9 +114,9 @@ if __name__ == '__main__':
     np.save('y_test.npy', y_test)
 
     # save X_test to S3 bucket
-    k = b.new_key('50_full_VGG16_X_test.npy')
+    k = b.new_key('100_full_basic_X_test.npy')
     k.set_contents_from_filename('X_test.npy')
 
     # save y_test to S3 bucket
-    k = b.new_key('50_full_VGG16_y_test.npy')
+    k = b.new_key('100_full_basic_y_test.npy')
     k.set_contents_from_filename('y_test.npy')
