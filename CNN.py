@@ -29,6 +29,9 @@ def basic(img_size, weights_path = None):
     model.add(Dropout(0.5))
     model.add(Dense(5, activation='softmax'))
 
+    if weights_path:
+        model.load_weights(weights_path)
+
     model.compile(optimizer='adam', loss='categorical_crossentropy')
 
     return model
@@ -161,4 +164,4 @@ def vgg_19(weights_path=None, img_size=50):
     sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(optimizer=sgd, loss='categorical_crossentropy')
 
-    return model
+    return modelato
