@@ -25,7 +25,7 @@ def fit_model(model, X_file, y_file, bucket = 'ajfcapstonearrays',
     save_weights_local(model, weights_filename)
 
 def fit_model_batches(X_filename, model=None, img_size = 50,
-                      lr = 0.001, epochs = 25, batch_size = 250)
+                      lr = 0.001, epochs = 25, batch_size = 250,
                       bucket = 'ajfcapstonearrays',
                       weights_filename='VGG_16_batch'):
     '''
