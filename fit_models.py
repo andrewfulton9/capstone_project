@@ -24,19 +24,10 @@ def fit_model(model, X_file, y_file, bucket = 'ajfcapstonearrays',
     model.fit(X, y)
     save_weights_local(model, weights_filename)
 
-def get_y_filename(x_filename):
-    '''
-    INPUT: x_filename with X training/testing data
-    OUTPUT: y_filename with y data corresponding to x_filename data
-    '''
-    ls_x_filename = x_filename.split('_')
-    ls_x_filename[1] = 'y'
-    y_filename = '_'.join(ls_x_filename)
-    return y_filename
-
-def fit_model_batches(X_filename, model=None, bucket = 'ajfcapstonearrays',
-                      weights_filename='VGG_16_batch',
-                      batch_size = 999):
+def fit_model_batches(X_filename, model=None, img_size = 50,
+                      lr = 0.001, epochs = 25, batch_size = 250)
+                      bucket = 'ajfcapstonearrays',
+                      weights_filename='VGG_16_batch'):
     '''
     input: model = model to fit
            filename = name batches are saved under
@@ -53,15 +44,27 @@ def fit_model_batches(X_filename, model=None, bucket = 'ajfcapstonearrays',
     y_test = y_files[-1]
     num_batches = len(x_files[:-1])
     count = 1
+    model = model(img_size=img_size, lr = lr)
     for X_train, y_train in zip(x_files[:-1], y_files[:-1]):
         print 'fitting batch {} of {}:\n X = {}, y = {}'.format(\
                             count, num_batches, X_train, y_train)
         X,y = ip.get_Xy_data(X_train,y_train, bucket=bucket)
-        model.fit(X,y, nb_epoch = 25, batch_size = batch_size)
+        model.fit(X,y, nb_epoch = epochs, batch_size = batch_size)
         count += 1
     save_weights_local(model, weights_filename)
+    save_weights_remote()
     X_test, y_test = ip.get_Xy_data(X_test, y_test, bucket = bucket)
     return X_test, y_test
+
+def get_y_filename(x_filename):
+    '''
+    INPUT: x_filename with X training/testing data
+    OUTPUT: y_filename with y data corresponding to x_filename data
+    '''
+    ls_x_filename = x_filename.split('_')
+    ls_x_filename[1] = 'y'
+    y_filename = '_'.join(ls_x_filename)
+    return y_filename
 
 def save_weights_local(model, name):
     '''
@@ -86,17 +89,16 @@ def save_weights_remote(bucket = 'ajfcapstoneweights'):
         path = 'weights/' + f
         k = b.new_key(f)
         k.set_contents_from_filename(path)
+        os.remove(path)
 
 if __name__ == '__main__':
     # build model to fit
-    model = CNN.basic(img_size=50)
+    model = CNN.basic
 
     # fit models and return files to use for testing
     X_test, y_test = fit_model_batches('arr_X_50_full', model = model,
+                                       lr = 0.01
                                     weights_filename='50_full_basic_batchfit')
-
-    # save weights to s3 bucket
-    save_weights_remote()
 
     # get the probability of each classification or each test observation, and
     # get the classification each observation was classified as
