@@ -97,7 +97,7 @@ if __name__ == '__main__':
 
     # fit models and return files to use for testing
     X_test, y_test = fit_model_batches('arr_X_100_full', model = model,
-                                img_size = 100
+                                img_size = 100,
                                 lr = 0.001,
                                 weights_filename='100_full_basic_batchfit')
 
