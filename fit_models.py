@@ -97,7 +97,7 @@ if __name__ == '__main__':
 
     # fit models and return files to use for testing
     X_test, y_test = fit_model_batches('arr_X_50_full', model = model,
-                                       lr = 0.01
+                                       lr = 0.01,
                                     weights_filename='50_full_basic_batchfit')
 
     # get the probability of each classification or each test observation, and
