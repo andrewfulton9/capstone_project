@@ -1,7 +1,7 @@
 from keras.models import Sequential
 from keras.layers import Convolution2D, MaxPooling2D, ZeroPadding2D
 from keras.layers.core import Dense, Activation, Flatten, Dropout
-from keras.optimizers import SGD, adam
+from keras.optimizers import SGD, Adam
 
 import tempfile
 
@@ -32,7 +32,7 @@ def vgg_basic(img_size, weights_path = None, lr = 0.001):
     if weights_path:
         model.load_weights(weights_path)
 
-    adam = adam(lr = lr)
+    adam = Adam(lr = lr)
 
     model.compile(optimizer=adam, loss='categorical_crossentropy')
 
