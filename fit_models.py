@@ -93,7 +93,7 @@ def save_weights_remote(bucket = 'ajfcapstoneweights'):
 
 if __name__ == '__main__':
     # build model to fit
-    model = CNN.basic
+    model = CNN.vgg_basic
 
     # fit models and return files to use for testing
     X_test, y_test = fit_model_batches('arr_X_50_full', model = model,
