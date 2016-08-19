@@ -1,14 +1,14 @@
 from keras.models import Sequential
 from keras.layers import Convolution2D, MaxPooling2D, ZeroPadding2D
 from keras.layers.core import Dense, Activation, Flatten, Dropout
-from keras.optimizers import SGD
+from keras.optimizers import SGD, adam
 
 import tempfile
 
 import image_processing as ip
 import aws_funcs as af
 
-def basic(img_size, weights_path = None):
+def vgg_basic(img_size, weights_path = None, lr = 0.001):
     '''
     INPUT: img_size = size of images to train/ model was trained on
            weights_path = path to get weights of trained model
@@ -32,7 +32,9 @@ def basic(img_size, weights_path = None):
     if weights_path:
         model.load_weights(weights_path)
 
-    model.compile(optimizer='adam', loss='categorical_crossentropy')
+    adam = adam(lr = lr)
+
+    model.compile(optimizer=adam, loss='categorical_crossentropy')
 
     return model
 
@@ -164,4 +166,4 @@ def vgg_19(weights_path=None, img_size=50):
     sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(optimizer=sgd, loss='categorical_crossentropy')
 
-    return modelato
+    return model
