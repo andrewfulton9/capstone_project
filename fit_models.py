@@ -96,17 +96,18 @@ if __name__ == '__main__':
     model = CNN.vgg_basic
 
     # fit models and return files to use for testing
-    X_test, y_test = fit_model_batches('arr_X_50_full', model = model,
+    X_test, y_test = fit_model_batches('arr_X_100_full', model = model,
+                                img_size = 100
                                 lr = 0.001,
-                                weights_filename='50_full_basic_batchfit_1')
+                                weights_filename='100_full_basic_batchfit')
 
     # get the probability of each classification or each test observation, and
     # get the classification each observation was classified as
     probs, cats = sm.predict_model(X_test, model)
 
     # save the probability and category arrays
-    np.save('50_full_basic_probs.npy', probs)
-    np.save('50_full_basic_cats.npy', cats)
+    np.save('100_full_basic_probs.npy', probs)
+    np.save('100_full_basic_cats.npy', cats)
 
     # connect to S3 bucket
     b = af.connect_2_s3_bucket('ajfcapstonearrays')
@@ -116,9 +117,9 @@ if __name__ == '__main__':
     np.save('y_test.npy', y_test)
 
     # save X_test to S3 bucket
-    k = b.new_key('50_full_basic_X_test.npy')
+    k = b.new_key('100_full_basic_X_test.npy')
     k.set_contents_from_filename('X_test.npy')
 
     # save y_test to S3 bucket
-    k = b.new_key('50_full_basic_y_test.npy')
+    k = b.new_key('100_full_basic_y_test.npy')
     k.set_contents_from_filename('y_test.npy')
