@@ -3,6 +3,7 @@ import image_processing as ip
 import score_models as sm
 import aws_funcs as af
 import numpy as np
+import pandas as pd
 import os
 
 
