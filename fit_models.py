@@ -129,6 +129,7 @@ if __name__ == '__main__':
     # build model to fit
     model = CNN.vgg_basic
 
-    cnn = EmployModel(model, 'arr_X_50_full', lr = .0005)
+    cnn = EmployModel(model, 'arr_X_50_full', lr = .001,
+                      weights_filename = '50_full_basic_batchfit_2')
 
     print 'accuracy: ', cnn.accuracy()
