@@ -35,6 +35,8 @@ class EmployModel(object):
         self.y_train = self.y_files[:-1]
         self.X_test, self.y_test = self.get_test_files()
 
+        self.num_batches = len(self.X_train)
+
         self.fit_model_batches()
 
         self._bw = af.connect_2_s3_bucket(self.weight_bucket)
