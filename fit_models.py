@@ -74,7 +74,7 @@ class EmployModel(object):
         y_test = self.reshape_y_test_arr(y_test)
         return X_test, y_test
 
-    def get_y_filename(x_filename):
+    def get_y_filename(self, x_filename):
         '''
         INPUT: x_filename with X training/testing data
         OUTPUT: y_filename with y data corresponding to x_filename data
@@ -104,7 +104,7 @@ class EmployModel(object):
             k.set_contents_from_filename(path)
         return
 
-    def reshape_y_test_arr(y_arr):
+    def reshape_y_test_arr(self, y_arr):
         df = pd.DataFrame(y_arr)
         df[1] = df[1].apply(lambda x: 2 if x == 1 else 0)
         df[2] = df[2].apply(lambda x: 3 if x == 1 else 0)
