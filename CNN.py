@@ -18,6 +18,7 @@ def vgg_basic(img_size, weights_path = None, lr = 0.001):
     A very basic convolutional neural net for testing
     '''
     model = Sequential()
+    
     model.add(ZeroPadding2D((1,1),input_shape=(3, img_size, img_size)))
     model.add(Convolution2D(64, 3, 3, activation='relu'))
     model.add(ZeroPadding2D((1,1)))
