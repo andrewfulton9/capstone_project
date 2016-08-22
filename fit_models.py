@@ -10,9 +10,9 @@ class EmployModel(object):
 
     def __init__(model, X_file,
                  arr_bucket = 'ajfcapstonearrays',
-                 weight_bucket = 'ajfcapstoneweights'
+                 weight_bucket = 'ajfcapstoneweights',
                  weights_filename = None, img_size = 50,
-                 lr = 0.001, epochs = 25, batch_size = 250,):
+                 lr = 0.001, epochs = 25, batch_size = 250):
         self.model = model
         self.X_file = X_file
         self.arr_bucket = arr_bucket
