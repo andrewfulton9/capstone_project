@@ -71,6 +71,7 @@ class EmployModel(object):
         X_test, y_test = ip.get_Xy_data(self.X_files[-1],
                                         self.y_files[-1],
                                         bucket = self.arr_bucket)
+        y_test = self.reshape_y_test_arr(y_test)
         return X_test, y_test
 
     def get_y_filename(x_filename):
@@ -103,12 +104,31 @@ class EmployModel(object):
             k.set_contents_from_filename(path)
         return
 
+    def reshape_y_test_arr(y_arr):
+        df = pd.DataFrame(y_arr)
+        df[1] = df[1].apply(lambda x: 2 if x == 1 else 0)
+        df[2] = df[2].apply(lambda x: 3 if x == 1 else 0)
+        df[3] = df[3].apply(lambda x: 4 if x == 1 else 0)
+        df[4] = df[4].apply(lambda x: 5 if x == 1 else 0)
+        arr = df.sum(axis = 1).astype(int).values
+        return arr - 1
+
+    def test_probabilities():
+        return self.model.predict_proba(self.X_test)
+
+    def test_classifications():
+        return self.model.predict_classes(self.X_test)
+
+    def accuracy():
+        pred_classes = self.test_classifications()
+        correct = sum([1 for a, b in zip(self.y_test, pred_classes) if a == b])
+        return float(correct) / len(y_test)
+
+
 if __name__ == '__main__':
     # build model to fit
     model = CNN.vgg_basic
 
-    cnn = EmployModel(model, 'arr_X_50_full')
+    cnn = EmployModel(model, 'arr_X_50_full', lr = .0005)
 
-    # get the probability of each classification or each test observation, and
-    # get the classification each observation was classified as
-    probs, cats = sm.predict_model(cnn.X_test, cnn.model)
+    print 'accuracy: ', cnn.accuracy()
