@@ -8,7 +8,7 @@ import os
 
 class EmployModel(object):
 
-    def __init__(model, X_file,
+    def __init__(self, model, X_file,
                  arr_bucket = 'ajfcapstonearrays',
                  weight_bucket = 'ajfcapstoneweights',
                  weights_filename = None, img_size = 50,
@@ -40,7 +40,7 @@ class EmployModel(object):
         self.save_weights_local()
         self.save_weights_remote()
 
-    def fit_model_batches():
+    def fit_model_batches(self):
         '''
         input: model = model to fit
                filename = name batches are saved under
@@ -59,15 +59,15 @@ class EmployModel(object):
                                 batch_size = self.batch_size)
         return
 
-    def get_X_files():
+    def get_X_files(self):
         x_files = [f.name for f in self._b.list() if self.X_file in f.name]
         return x_files
 
-    def get_y_files():
+    def get_y_files(self):
         y_files = [self.get_y_filename(f) for f in self.X_files]
         return y_files
 
-    def get_test_files():
+    def get_test_files(self):
         X_test, y_test = ip.get_Xy_data(self.X_files[-1],
                                         self.y_files[-1],
                                         bucket = self.arr_bucket)
@@ -84,14 +84,14 @@ class EmployModel(object):
         y_filename = '_'.join(ls_x_filename)
         return y_filename
 
-    def save_weights_local():
+    def save_weights_local(self):
         '''
         save the weights from a fitted model to local weights folder
         '''
         self.model.save_weights('weights/' + self.weights_filename + '.h5')
         return
 
-    def save_weights_remote():
+    def save_weights_remote(self):
         '''
         input: S3 bucket to save weights into
         output: None
@@ -113,13 +113,13 @@ class EmployModel(object):
         arr = df.sum(axis = 1).astype(int).values
         return arr - 1
 
-    def test_probabilities():
+    def test_probabilities(self):
         return self.model.predict_proba(self.X_test)
 
-    def test_classifications():
+    def test_classifications(self):
         return self.model.predict_classes(self.X_test)
 
-    def accuracy():
+    def accuracy(self):
         pred_classes = self.test_classifications()
         correct = sum([1 for a, b in zip(self.y_test, pred_classes) if a == b])
         return float(correct) / len(y_test)
