@@ -108,6 +108,10 @@ class EmployModel(object):
         return
 
     def reshape_y_test_arr(self, y_arr):
+        '''
+        input: y_arr = y test array shaped (n, 5)
+        output: y test array reshaped to (n, 1)
+        '''
         df = pd.DataFrame(y_arr)
         df[1] = df[1].apply(lambda x: 2 if x == 1 else 0)
         df[2] = df[2].apply(lambda x: 3 if x == 1 else 0)
@@ -125,14 +129,14 @@ class EmployModel(object):
     def accuracy(self):
         pred_classes = self.test_classifications()
         correct = sum([1 for a, b in zip(self.y_test, pred_classes) if a == b])
-        return float(correct) / len(y_test)
+        return float(correct) / len(self.y_test)
 
 
 if __name__ == '__main__':
     # build model to fit
     model = CNN.vgg_basic
 
-    cnn = EmployModel(model, 'arr_X_50_full', lr = .001,
+    cnn = EmployModel(model, 'arr_X_50_full', lr = .0005,
                       weights_filename = '50_full_basic_batchfit_2')
 
     print 'accuracy: ', cnn.accuracy()
