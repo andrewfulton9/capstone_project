@@ -35,7 +35,9 @@ def vgg_basic(img_size, weights_path = None, lr = 0.001):
 
     adam = Adam(lr = lr)
 
-    model.compile(optimizer=adam, loss='categorical_crossentropy')
+    model.compile(optimizer=adam,
+                  loss='categorical_crossentropy',
+                  metrics = ['accuracy'])
 
     return model
 
@@ -100,7 +102,9 @@ def vgg_16(img_size=50, weights_path=None, lr = 0.001):
 
     adam = Adam(lr = lr)
 
-    model.compile(optimizer=adam, loss='categorical_crossentropy')
+    model.compile(optimizer=adam,
+                  loss='categorical_crossentropy',
+                  metrics = ['accuracy'])
 
 def vgg_19(weights_path=None, img_size=50, lr = 0.001):
     '''
@@ -166,6 +170,8 @@ def vgg_19(weights_path=None, img_size=50, lr = 0.001):
 
     adam = Adam(lr = lr)
 
-    model.compile(optimizer=adam, loss='categorical_crossentropy')
+    model.compile(optimizer=adam,
+                  loss='categorical_crossentropy',
+                  metrics = ['accuracy'])
 
     return model
