@@ -60,7 +60,6 @@ class EmployModel(object):
             X, y = ip.get_Xy_data(X_train,y_train, bucket=self.arr_bucket)
             self.model.fit(X,y, nb_epoch = self.epochs,
                                 batch_size = self.batch_size
-                                #validation_data = (self.X_test, self.y_test)
                                 )
         return
 
@@ -138,7 +137,7 @@ if __name__ == '__main__':
     # build model to fit
     model = CNN.vgg_basic
 
-    cnn = EmployModel(model, 'arr_X_50_full', lr = .001, batch_size=500,
-                      weights_filename = '50_full_basic_batchfit_2')
+    cnn = EmployModel(model, 'arr_X_50_full', lr = .001, batch_size=250,
+                      weights_filename = '50_full_basic_batchfit_3')
 
     print 'accuracy: ', cnn.accuracy()
