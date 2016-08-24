@@ -59,8 +59,8 @@ class EmployModel(object):
                                 i, self.num_batches, X_train, y_train)
             X, y = ip.get_Xy_data(X_train,y_train, bucket=self.arr_bucket)
             self.model.fit(X,y, nb_epoch = self.epochs,
-                                batch_size = self.batch_size,
-                                validation_data = (self.X_test, self.y_test),
+                                batch_size = self.batch_size
+                                #validation_data = (self.X_test, self.y_test),
                                 )
         return
 
