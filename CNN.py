@@ -36,8 +36,7 @@ def vgg_basic(img_size, weights_path = None, lr = 0.001):
     adam = Adam(lr = lr)
 
     model.compile(optimizer=adam,
-                  loss='categorical_crossentropy',
-                  metrics = ['accuracy'])
+                  loss='categorical_crossentropy')
 
     return model
 
