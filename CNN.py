@@ -18,7 +18,7 @@ def vgg_basic(img_size, weights_path = None, lr = 0.001):
     A very basic convolutional neural net for testing
     '''
     model = Sequential()
-    
+
     model.add(ZeroPadding2D((1,1),input_shape=(3, img_size, img_size)))
     model.add(Convolution2D(64, 3, 3, activation='relu'))
     model.add(ZeroPadding2D((1,1)))
@@ -39,7 +39,7 @@ def vgg_basic(img_size, weights_path = None, lr = 0.001):
 
     return model
 
-def vgg_16(img_size=50, weights_path=None):
+def vgg_16(img_size=50, weights_path=None, lr = 0.001):
     '''
     INPUT: img_size = size of images to train/ model was trained on
            weights_path = path to get weights of trained model
@@ -98,11 +98,11 @@ def vgg_16(img_size=50, weights_path=None):
     #sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
     #model.compile(optimizer=sgd, loss='categorical_crossentropy')
 
-    model.compile(optimizer = 'adam', loss = 'categorical_crossentropy')
+    adam = Adam(lr = lr)
 
-    return model
+    model.compile(optimizer=adam, loss='categorical_crossentropy')
 
-def vgg_19(weights_path=None, img_size=50):
+def vgg_19(weights_path=None, img_size=50, lr = 0.001):
     '''
     INPUT: img_size = size of images to train/ model was trained on
            weights_path = path to get weights of trained model
@@ -164,7 +164,8 @@ def vgg_19(weights_path=None, img_size=50):
     if weights_path:
         model.load_weights(weights_path)
 
-    sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
-    model.compile(optimizer=sgd, loss='categorical_crossentropy')
+    adam = Adam(lr = lr)
+
+    model.compile(optimizer=adam, loss='categorical_crossentropy')
 
     return model
