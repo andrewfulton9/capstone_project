@@ -14,6 +14,17 @@ class EmployModel(object):
                  weight_bucket = 'ajfcapstoneweights',
                  weights_filename = None, img_size = 50,
                  lr = 0.001, epochs = 25, batch_size = 250):
+        '''
+        input: model = object of model being employed
+               X_file = base filename of independant variable files
+               arr_bucket = S3 bucket to retrieve data arrays from
+               weight_bucket = S3 bucket to save weights into
+               weights_filename = base name to save trained model weights into
+               img_size = size of images being fed into model
+               lr = learning rate of model
+               epochs = # of epochs to use
+               batch_size = size of batches in each epoch
+        '''
         self.model = model
         self.X_file = X_file
         self.arr_bucket = arr_bucket
@@ -45,10 +56,8 @@ class EmployModel(object):
 
     def fit_model_batches(self):
         '''
-        input: model = model to fit
-               filename = name batches are saved under
-               weights_filename = filename under which weights are saved
-        output: None
+        input: none
+        output: none
 
         fits a model iteratively through batches of data. For large training data
         sets
@@ -64,14 +73,23 @@ class EmployModel(object):
         return
 
     def get_X_files(self):
+        '''
+        gets the names files for the independant variables (image arrays)
+        '''
         x_files = [f.name for f in self._b.list() if self.X_file in f.name]
         return x_files
 
     def get_y_files(self):
+        '''
+        gets the names of files for the dependant variables (category arrays)
+        '''
         y_files = [self.get_y_filename(f) for f in self.X_files]
         return y_files
 
     def get_test_files(self):
+        '''
+        gets files the model will be validated on
+        '''
         X_test, y_test = ip.get_Xy_data(self.X_files[-1],
                                         self.y_files[-1],
                                         bucket = self.arr_bucket)
@@ -122,12 +140,24 @@ class EmployModel(object):
         return arr - 1
 
     def test_probabilities(self):
+        '''
+        returns the probability of belonging to any of the classes for each
+        image in the validation set
+        '''
         return self.model.predict_proba(self.X_test)
 
     def test_classifications(self):
+        '''
+        returns the most likely classification for each image in the validation
+        set
+        '''
         return self.model.predict_classes(self.X_test)
 
     def accuracy(self):
+        '''
+        returns the accuracy of the model based on the predicted classes of the
+        validation set vs. the real values of the validation set
+        '''
         pred_classes = self.test_classifications()
         correct = sum([1 for a, b in zip(self.y_test, pred_classes) if a == b])
         return float(correct) / len(self.y_test)
