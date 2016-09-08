@@ -15,7 +15,7 @@ def vgg_basic(img_size, weights_path = None, lr = 0.001):
     OUTPUT: the fitted/unfitted model depending on if a weights path was
             specified
 
-    A very basic convolutional neural net for testing
+    A basic convolutional neural net for testing
     '''
     model = Sequential()
 

@@ -97,9 +97,9 @@ def build_np_arrs(df, img_size=50):
 
 def save_arrs(arr, bucket, name):
     '''
-    input: array to save,
-           bucket to save array to,
-           name to save array as
+    input: arr = array to save,
+           bucket = bucket to save array to,
+           name = name to save array as
     output: none, saves files to bucket as name given
     '''
     temp_dir = tempfile.mkdtemp()
@@ -116,6 +116,18 @@ def save_arrs(arr, bucket, name):
 def bin_save_arrs(bucket_ls, img_size = 50,
                   sample_size = None, bin_size=None,
                   save_bucket= 'ajfcapstonearrays', name = 'arr'):
+    '''
+    input: bucket_ls = list of buckets to download imgs from
+           img_size = size images are to be downsampled to
+           sample_size = number of images to sample
+           bin_size = size of each batch
+           save_bucket = S3 bucket where data is to be saved to
+           name = base name of arrays
+    output: none
+
+    A function to batch arrays into different files so the files are not too
+    large to send back and forth from S3 buckets.
+    '''
     print 'getting url_dict'
     url_dict = get_url_dict(bucket_ls)
     print 'building url_df'
@@ -148,7 +160,7 @@ def bin_save_arrs(bucket_ls, img_size = 50,
 def process_imgs(bucket_ls, img_size = 50, sample_size = None,
                  save_bucket= 'ajfcapstonearrays', name = 'arr'):
     '''
-    input: list of buckets,
+    input: bucket_ls = list of buckets
            img_size = size to downsample images to
            sample_size = size or sample to return
            save_bucket = bucket to save arrays into
