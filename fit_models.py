@@ -1,6 +1,4 @@
 import CNN
-import image_processing as ip
-import score_models as sm
 import aws_funcs as af
 import numpy as np
 import pandas as pd
@@ -66,7 +64,7 @@ class EmployModel(object):
                                                    self.y_train)):
             print 'fitting batch {} of {}:\n X = {}, y = {}'.format(\
                                 i, self.num_batches, X_train, y_train)
-            X, y = ip.get_Xy_data(X_train,y_train, bucket=self.arr_bucket)
+            X, y = af.get_Xy_data(X_train,y_train, bucket=self.arr_bucket)
             self.model.fit(X,y, nb_epoch = self.epochs,
                                 batch_size = self.batch_size
                                 )
@@ -90,7 +88,7 @@ class EmployModel(object):
         '''
         gets files the model will be validated on
         '''
-        X_test, y_test = ip.get_Xy_data(self.X_files[-1],
+        X_test, y_test = af.get_Xy_data(self.X_files[-1],
                                         self.y_files[-1],
                                         bucket = self.arr_bucket)
         y_test = self.reshape_y_test_arr(y_test)
