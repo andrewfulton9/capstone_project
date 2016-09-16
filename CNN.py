@@ -15,7 +15,7 @@ def vgg_basic(img_size, weights_path = None, lr = 0.001):
     OUTPUT: the fitted/unfitted model depending on if a weights path was
             specified
 
-    A basic convolutional neural net for testing
+    A basic convolutional neural net. I found this one to have the best results.
     '''
     model = Sequential()
 
@@ -47,7 +47,8 @@ def vgg_16(img_size=50, weights_path=None, lr = 0.001):
     OUTPUT: the fitted/unfitted model depending on if a weights path was
             specified
 
-    The full vgg-16 model
+    The full vgg-16 model. Took far to long to train with the resources I had
+    available.
     '''
     model = Sequential()
     model.add(ZeroPadding2D((1,1),input_shape=(3, img_size, img_size)))
@@ -112,7 +113,8 @@ def vgg_19(weights_path=None, img_size=50, lr = 0.001):
     OUTPUT: the fitted/unfitted model depending on if a weights path was
             specified
 
-    The full vgg-16 model with 19 layers
+    The full vgg-16 model with 19 layers. Took far too long to train with the
+    resources I had available.
     '''
     model = Sequential()
     model.add(ZeroPadding2D((1,1),input_shape=(3, img_size, img_size)))
