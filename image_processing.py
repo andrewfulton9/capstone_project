@@ -195,19 +195,4 @@ class ImageProcessing(object):
                                                          self.sample_str)))
 
 if __name__ == '__main__':
-    # input_bucket = sys.argv[1]
-    # output_bucket = 'ajfcapstonearrays'
-    #
-    # get_img_array(input_bucket, output_bucket)
-
-    bucket_ls = ['ajfcapstonecars', 'ajfcapstonehome', 'ajfcapstonesavings',
-                 'ajfcapstonespecevents', 'ajfcapstonetravel']
-    #
-    # process_imgs(bucket_ls, img_size=100)
-
-    # process_imgs(bucket_ls, img_size=50, sample_size = 25, name =
-    #              'test_testing')
-
-    bin_save_arrs(bucket_ls, img_size = 50,
-                  sample_size = None, bin_size=1000,
-                  save_bucket= 'ajfcapstonearrays', name = 'arr')
+    process = ImageProcessing()
