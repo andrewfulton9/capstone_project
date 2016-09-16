@@ -196,3 +196,5 @@ class ImageProcessing(object):
 
 if __name__ == '__main__':
     process = ImageProcessing()
+
+    #say what?
