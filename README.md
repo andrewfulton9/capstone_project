@@ -45,9 +45,9 @@ The first step of my project was getting a training set from which to train my m
 
 Next I began looking at places to scrape from. My goal was to get around 100,000 images per category since I expected a fair amount of leakage between groups and because neural nets are notoriously expensive to train. I was able to find a stock photo site that I could get roughly 10,000 images per keyword so I next came up with 10-15 subcategory keywords for each category to scrape from. I then scraped each keyword, running my code on an AWS EC2 instance and saving the results into AWS S3 buckets.
 
-For the most part, the images I were able to get were pretty good. Below are some examples of images that fit well in their respective categories:
+#### Good Examples of Images in Categories
 
-#### Good Examples of images in categories
+For the most part, the images I were able to get were pretty good. Below are some examples of images that fit well in their respective categories:
 
 ##### Car Expenses
 
@@ -68,6 +68,30 @@ For the most part, the images I were able to get were pretty good. Below are som
 ##### Travel
 
 <img src = "presentation_images/good_travel_ex1.jpg" height='200'> <img src = "presentation_images/good_travel_ex2.jpg" height='200'>
+
+#### Bad Examples of Images in Categories
+
+Unfortunately, considering how broad the categories were and the number of images I needed for each one to train the nets, There were also a lot of images that did not fit as well into their categories or that would have fit in just as well if not better in another category. I have included some examples of these below:
+
+##### Car Expenses
+
+<img src = "presentation_images/bad_car_ex_1.jpg" height='200'> <img src = "presentation_images/bad_car_ex2.jpg" height='200'>
+
+##### Home Expenses
+
+<img src = "presentation_images/bad_home_ex1.jpg" height='200'> <img src = "presentation_images/bad_home_ex2.jpg" height='200'>
+
+##### Special Events
+
+<img src = "presentation_images/bad_spec_ex1.jpg" height='200'> <img src = "presentation_images/bad_spec_ex2.jpg" height='200'>
+
+##### General Savings
+
+<img src = "presentation_images/bad_save_ex1.jpg" height='200'> <img src = "presentation_images/bad_save_ex2.jpg" height='200'>
+
+##### Travel
+
+<img src = "presentation_images/bad_travel_ex1.jpg" height='200'> <img src = "presentation_images/bad_travel_ex2.jpg" height='200'>
 
 ## Processing <sub><sup>[[code]](image_processing.py)</sup></sub>
 
