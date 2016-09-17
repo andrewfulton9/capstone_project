@@ -51,7 +51,7 @@ For the most part, the images I were able to get were pretty good. Below are som
 
 ##### Car Expenses
 
-<img src = "presentation_images/good_car_ex_1.jpg" width='425'> <img src = "presentation_images/good_car_ex2.jpg" width='425'>
+<img src = "presentation_images/good_car_ex_1.jpg" height='300'> <img src = "presentation_images/good_car_ex2.jpg" height='300'>
 
 ##### Home Expenses
 
