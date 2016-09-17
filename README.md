@@ -45,11 +45,11 @@ The first step of my project was getting a training set from which to train my m
 
 Next I began looking at places to scrape from. My goal was to get around 100,000 images per category since I expected a fair amount of leakage between groups and because neural nets are notoriously expensive to train. I was able to find a stock photo site that I could get roughly 10,000 images per keyword so I next came up with 10-15 subcategory keywords for each category to scrape from. I then scraped each keyword, running my code on an AWS EC2 instance and saving the results into AWS S3 buckets.
 
-## Processing
+## Processing <sub><sup>[[code]](image_processing.py)</sup></sub>
 
 Once I had all my images scraped, I needed to process them. To do this I down sampled each to photo to 50x50 and 100x100 pixels to standardize the shape of each photo and to see how much of an effect the size of each photo would have on my models. I also took each of these 50x50 and 100x100 arrays for each photo and broke them into another dimension so that each image was represented by a 3x50x50 and 3x100x100 arrays with the top dimension representing the red, blue and green pixel values for each pixel. To do this processing I used Python's SciKit-Image library. I again used an EC2 AWS machine to run the program and again saved the images that I scraped in AWS S3 buckets.
 
-## Convolutional Neural Net
+## Convolutional Neural Net <sub><sup>[[neural net code]](CNN.py)</sup></sub> <sub><sup>[[run model code]](fit_model.py)</sup></sub>
 
 Once all my images were processed I used then to train the neural nets. I wanted to try a couple of different models for my task. After some research I decided on the 16 and 19 layered VGG convolutional Neural Nets. Each of which have 5 convolutional layers with a max pooling step between each one and 3 dense fully connected layers. I batch trained each network to account for the massive size of the training set which ended up being around 400,000 images. I ran the nets on GPU optimized AWS EC2 instances in order to reduce the runtime on training the models. I used the Keras python library with theanos backend to build the models. Unfortunately, due to the massive size of both the training set and the model itself. I found it to be unreasonable to train the 16 and 19 layered models with the resources I had at my disposal. For instance it was taking me roughly 8 days to train those models on a an AWS GPU optimized EC2 instance, and at about $2.60 an hour, the costs very quickly add up. Therefore I made a much smaller net with only 2 convolutional layers and 2 dense layers. While this net still took me roughly 8 hours to train, that is still much more reasonable than 8 days.
 
