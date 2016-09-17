@@ -71,7 +71,7 @@ For the most part, the images I were able to get were pretty good. Below are som
 
 #### Bad Examples of Images in Categories
 
-Unfortunately, considering how broad the categories were and the number of images I needed for each one to train the nets, There were also a lot of images that did not fit as well into their categories or that would have fit in just as well if not better in another category. I have included some examples of these below:
+Unfortunately, considering how broad the categories were and the number of images I needed for each one to train the nets, there were also a lot of images that did not fit as well into their categories or that would have fit in just as well if not better in another category. I have included some examples of these below:
 
 ##### Car Expenses
 
