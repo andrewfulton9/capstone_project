@@ -4,7 +4,7 @@
 </div>
 <br><br>
 <p>
-Dobot Image Classifier is a project done in collaboration with Dobot, Inc., a Denver Startup  with the purpose of helping users determine appropriate savings goals based on images users upload to represent their savings goals. The way that Dobot's app works is that a user joins, links their bank account, and creates savings goals by uploading an image and specifying a savings goal. Dobot then uses the users account information to periodically removing small amounts of money from a users checking account and placing it in their savings account.
+Dobot Image Classifier is a project done in collaboration with Dobot Inc., a Denver Startup, with the purpose of helping users determine appropriate savings goals based on images users upload to represent their savings goals. The way that Dobot's app works is that a user joins, links their bank account, and creates savings goals by uploading an image and specifying a savings goal. Dobot then uses the users account information to periodically removing small amounts of money from a users checking account and placing it in their savings account.
 </p>
 
 ## Goal
