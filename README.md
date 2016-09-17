@@ -1,4 +1,4 @@
-<center><h1>Dobot Image Classifier</h1></center> 
+<h1 align='center'>Dobot Image Classifier</h1></center> 
 
 <img src = "presentation_images/dobot.png" >
 
