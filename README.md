@@ -45,6 +45,22 @@ The first step of my project was getting a training set from which to train my m
 
 Next I began looking at places to scrape from. My goal was to get around 100,000 images per category since I expected a fair amount of leakage between groups and because neural nets are notoriously expensive to train. I was able to find a stock photo site that I could get roughly 10,000 images per keyword so I next came up with 10-15 subcategory keywords for each category to scrape from. I then scraped each keyword, running my code on an AWS EC2 instance and saving the results into AWS S3 buckets.
 
+For the most part, the images I were able to get were pretty good. Below are some examples of images that fit well in their respective categories:
+
+#### Good Examples of images in categories
+
+##### Car Expenses
+
+<img src = "presentation_images/good_car_ex_1.jpg" width='425'> <img src = "presentation_images/good_car_ex2.jpg" width='425'>
+
+##### Home Expenses
+
+##### Special Events
+
+##### General Savings
+
+##### Travel
+
 ## Processing <sub><sup>[[code]](image_processing.py)</sup></sub>
 
 Once I had all my images scraped, I needed to process them. To do this I down sampled each to photo to 50x50 and 100x100 pixels to standardize the shape of each photo and to see how much of an effect the size of each photo would have on my models. I also took each of these 50x50 and 100x100 arrays for each photo and broke them into another dimension so that each image was represented by a 3x50x50 and 3x100x100 arrays with the top dimension representing the red, blue and green pixel values for each pixel. To do this processing I used Python's SciKit-Image library. I again used an EC2 AWS machine to run the program and again saved the images that I scraped in AWS S3 buckets.
