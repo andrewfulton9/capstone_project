@@ -55,11 +55,19 @@ For the most part, the images I were able to get were pretty good. Below are som
 
 ##### Home Expenses
 
+<img src = "presentation_images/good_home_ex1.jpg" height='200'> <img src = "presentation_images/good_home_ex2.jpg" height='200'>
+
 ##### Special Events
+
+<img src = "presentation_images/good_spec_ex1.jpg" height='200'> <img src = "presentation_images/good_spec_ex2.jpg" height='200'>
 
 ##### General Savings
 
+<img src = "presentation_images/good_save_ex1.jpg" height='200'> <img src = "presentation_images/good_save_ex2.jpg" height='200'>
+
 ##### Travel
+
+<img src = "presentation_images/good_travel_ex1.jpg" height='200'> <img src = "presentation_images/good_travel_ex2.jpg" height='200'>
 
 ## Processing <sub><sup>[[code]](image_processing.py)</sup></sub>
 
