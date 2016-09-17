@@ -75,7 +75,7 @@ Unfortunately, considering how broad the categories were and the number of image
 
 ##### Car Expenses
 
-<img src = "presentation_images/bad_car_ex_1.jpg" height='200'> <img src = "presentation_images/bad_car_ex2.jpg" height='200'>
+<img src = "presentation_images/bad_car_ex1.jpg" height='200'> <img src = "presentation_images/bad_car_ex2.jpg" height='200'>
 
 ##### Home Expenses
 
