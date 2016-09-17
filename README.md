@@ -34,8 +34,7 @@ I used several different tools for this project. The coding language I used with
   - Keras
   - Theano
 
-## Scraping
-[scraping code](scraper.py)
+## Scraping [code](scraper.py)
 
 The first step of my project was getting a training set from which to train my model. Next I had to decide which categories to use to train my model. Based on the data that I got from Dobot, I settled on the following five:
   - Car expenses
