@@ -9,7 +9,7 @@ Dobot Image Classifier is a project done in collaboration with Dobot Inc., a Den
 
 ## Goal
 
-The goal of this project is to classify images that users upload to represent their savings goals in order to better understand what users savings goals are, and therefore better help the users meet their goals.
+The goal of this project is to classify images that users upload to represent their savings goals in order to better understand what users savings goals are, and therefore better help the users meet those goals.
 
 ## Motivations
 
