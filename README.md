@@ -108,7 +108,7 @@ Once all my images were processed I used them to train the neural nets. I wanted
 
 <figure>
 <img src = "presentation_images/imagenet_vgg16layer.png" height='250'>
-<figcaption> a diagram for the VGG-16 convolutional neural net</figcaption>
+<figcaption align='center'> a diagram representing the structure of the VGG-16 convolutional neural net</figcaption>
 </figure>
 
 ## Results
