@@ -106,7 +106,10 @@ Once I had all my images scraped, I needed to process them. To do this I down sa
 
 Once all my images were processed I used them to train the neural nets. I wanted to try a couple of different models for my task. After some research I decided on the 16 and 19 layered VGG convolutional Neural Nets. Each of which have 5 convolutional layers with a max pooling step between each one and 3 dense fully connected layers. I batch trained each network to account for the massive size of the training set which ended up being around 400,000 images. I ran the nets on GPU optimized AWS EC2 instances in order to reduce the runtime on training the models. I used the Keras python library with the Theanos backend to build the models. Unfortunately, due to the massive size of both the training set and the model itself. Unfortunalely I didn't have the extensive resources necessary to train the 16 and 19 layered models For instance it was taking me roughly 8 days to train those models on a an AWS GPU optimized EC2 instance, and at about $2.60 an hour, the costs add up very quickly. Therefore I made a much smaller net with only 2 convolutional layers and 2 dense layers. While this net still took me roughly 8 hours to train, that is still much more reasonable than 8 days.
 
+<figure>
 <img src = "presentation_images/imagenet_vgg16layer.png" height='250'>
+<figcaption> a diagram for the VGG-16 convolutional neural net</figcaption>
+</figure>
 
 ## Results
 
