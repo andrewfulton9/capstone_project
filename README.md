@@ -1,3 +1,9 @@
+<style>
+figure {
+  text-align: center;
+  margin: 10px auto;
+}
+
 <h1 align='center'>Dobot Image Classifier</h1></center>
 <div align='center'>
 <img align='center' src = "presentation_images/dobot.png" >
