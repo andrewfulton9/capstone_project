@@ -3,6 +3,7 @@ figure {
   text-align: center;
   margin: 10px auto;
 }
+</style>
 
 <h1 align='center'>Dobot Image Classifier</h1></center>
 <div align='center'>
