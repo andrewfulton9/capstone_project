@@ -102,7 +102,7 @@ Unfortunately, considering how broad the categories were and the number of image
 
 ## Processing <sub><sup>[[code]](image_processing.py)</sup></sub>
 
-Once I had all my images scraped, I needed to process them. To do this I down sampled each to photo to 50x50 and 100x100 pixels to standardize the shape of each photo and to see how much of an effect the size of each photo would have on my models. I also took each of these 50x50 and 100x100 arrays for each photo and broke them into another dimension so that each image was represented by a 3x50x50 and 3x100x100 arrays with the top dimension representing the red, blue and green pixel values for each pixel. To do this processing I used Python's SciKit-Image library. I again used an EC2 AWS machine to run the program and again saved the images that I scraped in AWS S3 buckets.
+Once I had all my images scraped, I needed to process them. To do this I down sampled each photo to 50x50 and 100x100 pixels to standardize the shape of each photo and to see how much of an effect the size of each photo would have on my models. I also took each of these 50x50 and 100x100 arrays for each photo and broke them into another dimension so that each image was represented by a 3x50x50 and 3x100x100 arrays with the top dimension representing the red, blue and green pixel values for each pixel. To do this processing I used Python's SciKit-Image library. I again used an EC2 AWS machine to run the program and again saved the images that I scraped in AWS S3 buckets.
 
 ## Convolutional Neural Net <sub><sup>[[neural net code]](CNN.py)</sup></sub> <sub><sup>[[train/test model code]](fit_models.py)</sup></sub>
 
